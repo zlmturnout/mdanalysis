@@ -1,0 +1,17 @@
+Copyright (C) 2012 Andy Somogyi, andy .dot. somogyie .at. gmail .dot. com
+
+This file is part of MDAnalsys
+
+Original copyright is unclear at this time as the original files
+did not contain any copyright information with the exection of
+some code Donated by John Stone. 
+
+This is a copy of VMD's psfgen, with the tcl nasty bits removed and a new
+SWIG automated Python wrapper added. This version of psfgen also has 
+Benjamin Linder, 
+http://www.benlabs.net/psfgen+top/Overview.html
+psfgen+top patches applied so that it can write GROMACS topology 
+files. Currently, this has not been tested. 
+
+Psfgen will be used for the creation and modification of topology
+files.

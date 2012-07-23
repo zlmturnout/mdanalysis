@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -Rf xml
+doxygen doxygen.config.in
+python doxy2swig.py xml/index.xml doxydocs.i
+swig -c++ -python -builtin -o psfgen_wrap.cpp psfgen.i
