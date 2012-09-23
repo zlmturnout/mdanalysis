@@ -198,7 +198,7 @@ def distance_array(np.ndarray[DTYPE_t, ndim=2] coordA, \
     
     with nogil, parallel():
         # The two loops are independent, let's use
-        for i in prange(rows, schedule="dynamic", chunksize=50) :
+        for i in prange(rows, schedule="dynamic") :
             for j in range(cols) :
                 
                 x = coordA[i,0] - coordB[j,0];
