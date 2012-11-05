@@ -416,10 +416,6 @@ public:
      */
 	int mutate(const char *resid, const char *resname);
 
-    /**
-     * reg type
-     */
-    enum RegenerateType{ANGLES, DIHEDRALS};
     
     /**
      * Remove all angles and/or dihedrals and completely regenerate them using the segment 
@@ -428,7 +424,7 @@ public:
      * angles/dihedrals for the entire molecule are regenerated from scratch.
      * @param what: what to regenerate, currently either ANGLES or DIHEDRALS.
      */
-	int regenerate(RegenerateType what);
+	int regenerate(const char* what);
 
     /**
      * Create multiple images of a set of atoms for use in locally enhanced sampling. 

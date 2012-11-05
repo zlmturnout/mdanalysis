@@ -347,13 +347,15 @@ class TestNCDFWriter(TestCase, RefVGV):
         self.prec = 6
         ext = ".ncdf"
         fd, self.outfile = tempfile.mkstemp(suffix=ext)
+        fd, self.outtop = tempfile.mkstemp(suffix=".pdb")
         self.Writer = MDAnalysis.coordinates.TRJ.NCDFWriter
 
     def tearDown(self):
-        try:
-            os.unlink(self.outfile)
-        except OSError:
-            pass
+        for f in self.outfile, self.outtop:
+            try:
+                os.unlink(f)
+            except OSError:
+                pass
         del self.universe
         del self.Writer
 
@@ -404,6 +406,27 @@ class TestNCDFWriter(TestCase, RefVGV):
             assert_array_almost_equal(written_ts.dimensions, orig_ts.dimensions, self.prec,
                                       err_msg="unitcells are not identical")
         del trr
+
+    @attr('issue')
+    def test_write_AtomGroup(self):
+        """test to write NCDF from AtomGroup (Issue 116)"""
+        p = self.universe.selectAtoms("not resname WAT")
+        p.write(self.outtop)
+        W = self.Writer(self.outfile, numatoms=p.numberOfAtoms())
+        for ts in self.universe.trajectory:
+            W.write(p)
+        W.close()
+
+        uw = MDAnalysis.Universe(self.outtop, self.outfile)
+        pw = uw.atoms
+
+        for orig_ts, written_ts in itertools.izip(self.universe.trajectory, uw.trajectory):
+            assert_array_almost_equal(p.positions, pw.positions, self.prec,
+                                      err_msg="coordinate mismatch between original and written trajectory at frame %d (orig) vs %d (written)" % (orig_ts.frame, written_ts.frame))
+            assert_almost_equal(orig_ts.time, written_ts.time, self.prec,
+                                err_msg="Time for step {0} are not the same.".format(orig_ts.frame))
+            assert_array_almost_equal(written_ts.dimensions, orig_ts.dimensions, self.prec,
+                                      err_msg="unitcells are not identical")
 
 
 
@@ -1179,6 +1202,39 @@ class TestDCDWriter_Issue59(TestCase):
         assert_array_almost_equal(dcd.atoms.coordinates(), xtc.atoms.coordinates(), 2,
                                   err_msg="DCD -> XTC: coordinates are messed up (frame %d)" % dcd.trajectory.frame)
 
+class TestNCDF2DCD(TestCase):
+    def setUp(self):
+        self.u = MDAnalysis.Universe(PRMncdf, NCDF)
+        # create the DCD
+        fd, self.dcd = tempfile.mkstemp(suffix='.dcd')
+        DCD = MDAnalysis.Writer(self.dcd, numatoms=self.u.atoms.numberOfAtoms())
+        for ts in self.u.trajectory:
+            DCD.write(ts)
+        DCD.close()
+        self.w = MDAnalysis.Universe(PRMncdf, self.dcd)
+
+    def tearDown(self):
+        try:
+            os.unlink(self.dcd)
+        except (AttributeError, OSError):
+            pass
+        del self.u
+        del self.w
+
+    @attr('issue')
+    def test_unitcell(self):
+        """Test that DCDWriter correctly writes the CHARMM unit cell"""
+        from itertools import izip
+        for ts_orig, ts_copy in izip(self.u.trajectory, self.w.trajectory):
+            assert_almost_equal(ts_orig.dimensions, ts_copy.dimensions, 3,
+                                err_msg="NCDF->DCD: unit cell dimensions wrong at frame %d" % ts_orig.frame)
+
+    def test_coordinates(self):
+        from itertools import izip
+        for ts_orig, ts_copy in izip(self.u.trajectory, self.w.trajectory):
+            assert_almost_equal(self.u.atoms.positions, self.w.atoms.positions, 3,
+                                err_msg="NCDF->DCD: coordinates wrong at frame %d" % ts_orig.frame)
+
 
 class TestDCDCorrel(_TestDCD):
     def setUp(self):
@@ -1733,6 +1789,51 @@ class TestXTCWriterSingleFrame(_GromacsWriterIssue101):
 
 class TestTRRWriterSingleFrame(_GromacsWriterIssue101):
     ext = ".trr"
+
+
+class _GromacsWriterIssue117(TestCase):
+    """Issue 117: Cannot write XTC or TRR from AMBER NCDF"""
+    ext = None
+    prec = 5
+
+    def setUp(self):
+        self.universe = mda.Universe(PRMncdf, NCDF)
+        fd, self.outfile = tempfile.mkstemp(suffix=self.ext)
+        self.Writer = MDAnalysis.Writer(self.outfile, numatoms=self.universe.atoms.numberOfAtoms(),
+                                        delta=self.universe.trajectory.delta,
+                                        step=self.universe.trajectory.skip_timestep)
+
+    def tearDown(self):
+        try:
+            os.unlink(self.outfile)
+        except:
+            pass
+        del self.universe
+        del self.Writer
+
+    @attr('issue')
+    def test_write_trajectory(self):
+        """Test writing Gromacs trajectories from AMBER NCDF (Issue 117)"""
+        t = self.universe.trajectory
+        for ts in self.universe.trajectory:
+            self.Writer.write_next_timestep(ts)
+        self.Writer.close()
+
+        uw = MDAnalysis.Universe(PRMncdf, self.outfile)
+
+        # check that the coordinates are identical for each time step
+        for orig_ts, written_ts in itertools.izip(self.universe.trajectory, uw.trajectory):
+            assert_array_almost_equal(written_ts._pos, orig_ts._pos, self.prec,
+                                      err_msg="coordinate mismatch between original and written trajectory at frame %d (orig) vs %d (written)" % (orig_ts.frame, written_ts.frame))
+
+
+class TestXTCWriterIssue117(_GromacsWriterIssue117):
+    ext = ".xtc"
+    prec = 2
+
+class TestTRRWriterIssue117(_GromacsWriterIssue117):
+    ext = ".trr"
+
 
 
 @attr('issue')

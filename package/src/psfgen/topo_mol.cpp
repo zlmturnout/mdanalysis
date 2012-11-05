@@ -2916,17 +2916,19 @@ int topo_mol::mutate(const char *resid, const char *rname) {
     return topo_mol_mutate(this, resid, rname);
 }
 
-int topo_mol::regenerate(RegenerateType t){
+int topo_mol::regenerate(const char* what){
     int result = -1;
-    switch(t) {
-    case ANGLES:
+
+    if(strcasecmp("ANGLES", what) == 0) {
         result = topo_mol_regenerate_angles(this);
-    case DIHEDRALS:
+    }
+    else if(strcasecmp("DIHEDRALS", what) == 0) {
         result = topo_mol_regenerate_dihedrals(this);
-    default:
+    }
+    else {
         std::stringstream ss;
         ss << "Invalid regenerate type give, was expecting either ANGLES, DIHEDRALS, but was given ";
-        ss << t;
+        ss << what;
         PSFGEN_ERROR(ss.str().c_str());
     }
     return result;

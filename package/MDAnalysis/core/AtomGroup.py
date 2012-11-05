@@ -312,6 +312,16 @@ class AtomGroup(object):
        difficult to use the feature consistently in scripts but it is
        much better for interactive work.
 
+    .. rubric:: References for analysis methods
+
+    .. [Dima2004] Dima, R. I., & Thirumalai, D. (2004). Asymmetry in the
+                  shapes of folded and denatured states of proteins. *J
+                  Phys Chem B*, 108(21),
+                  6564-6570. doi:`10.1021/jp037128y`_
+
+    .. _10.1021/jp037128y: http://dx.doi.org/10.1021/jp037128y
+
+
     .. versionchanged:: 0.7.6
        An empty AtomGroup can be created and no longer raises a
        :exc:`NoDataError`.
@@ -679,6 +689,40 @@ class AtomGroup(object):
         recenteredpos = self.coordinates() - self.centerOfMass()
         rog_sq = numpy.sum(masses*numpy.sum(numpy.power(recenteredpos, 2), axis=1))/self.totalMass()
         return numpy.sqrt(rog_sq)
+    def shapeParameter(self):
+        """Shape parameter.
+
+        See [Dima2004]_ for background information.
+
+        .. versionadded:: 0.8
+        """
+        masses = self.masses()
+        recenteredpos = self.coordinates() - self.centerOfMass()
+        tensor = numpy.zeros((3,3))
+        for x in xrange(recenteredpos.shape[0]):
+            tensor += masses[x] * numpy.outer(recenteredpos[x,:],
+                                              recenteredpos[x,:])
+        tensor /= self.totalMass()
+        eig_vals = numpy.linalg.eigvalsh(tensor)
+        shape = 27.0 * numpy.prod(eig_vals-numpy.mean(eig_vals)) / numpy.power(numpy.sum(eig_vals),3)
+        return shape
+    def asphericity(self):
+        """Asphericity.
+
+        See [Dima2004]_ for background information.
+
+        .. versionadded:: 0.8
+        """
+        masses = self.masses()
+        recenteredpos = self.coordinates() - self.centerOfMass()
+        tensor = numpy.zeros((3,3))
+        for x in xrange(recenteredpos.shape[0]):
+            tensor += masses[x] * numpy.outer(recenteredpos[x,:],
+                                              recenteredpos[x,:])
+        tensor /= self.totalMass()
+        eig_vals = numpy.linalg.eigvalsh(tensor)
+        shape = (3.0 / 2.0) * numpy.sum(numpy.power(eig_vals-numpy.mean(eig_vals),2)) / numpy.power(numpy.sum(eig_vals),2)
+        return shape
     def momentOfInertia(self):
         """Tensor of inertia as 3x3 NumPy array."""
         # Convert to local coordinates

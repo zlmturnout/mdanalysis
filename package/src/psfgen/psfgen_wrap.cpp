@@ -9302,11 +9302,12 @@ fail:
 SWIGINTERN PyObject *_wrap_topo_mol_regenerate(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   topo_mol *arg1 = (topo_mol *) 0 ;
-  topo_mol::RegenerateType arg2 ;
+  char *arg2 = (char *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
   PyObject * obj1 = 0 ;
   int result;
   
@@ -9316,15 +9317,17 @@ SWIGINTERN PyObject *_wrap_topo_mol_regenerate(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "topo_mol_regenerate" "', argument " "1"" of type '" "topo_mol *""'"); 
   }
   arg1 = reinterpret_cast< topo_mol * >(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "topo_mol_regenerate" "', argument " "2"" of type '" "topo_mol::RegenerateType""'");
-  } 
-  arg2 = static_cast< topo_mol::RegenerateType >(val2);
-  result = (int)(arg1)->regenerate(arg2);
+  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "topo_mol_regenerate" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  result = (int)(arg1)->regenerate((char const *)arg2);
   resultobj = SWIG_From_int(static_cast< int >(result));
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
   return resultobj;
 fail:
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
   return NULL;
 }
 
@@ -22669,8 +22672,6 @@ SWIG_init(void) {
   /* type '::topo_mol' */
   builtin_pytype = (PyTypeObject *)&SwigPyBuiltin__topo_mol_type;
   builtin_pytype->tp_dict = d = PyDict_New();
-  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "ANGLES",SWIG_From_int(static_cast< int >(topo_mol::ANGLES)));
-  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "DIHEDRALS",SWIG_From_int(static_cast< int >(topo_mol::DIHEDRALS)));
   SwigPyBuiltin_SetMetaType(builtin_pytype, metatype);
   builtin_pytype->tp_new = PyType_GenericNew;
   builtin_base_count = 0;
