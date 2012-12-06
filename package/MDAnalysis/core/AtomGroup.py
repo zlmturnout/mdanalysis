@@ -1130,8 +1130,10 @@ class AtomGroup(object):
     
     
     def get_forces(self, ts=None, copy=False, dtype=numpy.float32):
-        """Get a NumPy array of the atomic forces (if available).
-
+        """
+        Get a NumPy array of the atomic forces (if available).
+        Currently only supported for Gromacs .trr trajectories.
+        
         :Keywords:
            *ts*
                If *ts* is provided then positions are read from that
@@ -1150,13 +1152,13 @@ class AtomGroup(object):
                entirely appropriate. Most C-code actually requires the
                default  [:class:`numpy.float32`]
 
-        Coordinates can also be directly obtained from the attribute
+        Forces can also be directly obtained from the attribute
         :attr:`~AtomGroup.forces`.
 
-        Forces can be directly set with :meth:`~AtomGroup.set_positions` or
+        Forces can be directly set with :meth:`~AtomGroup.set_forces` or
         by assigning to :attr:`~AtomGroup.forces`.
 
-        .. versionadded:: 0.7.6
+        .. versionadded:: 0.7.7
         """
         if ts == None:
             ts = self.universe.trajectory.ts
@@ -1188,7 +1190,7 @@ class AtomGroup(object):
         See also :meth:`~AtomGroup.get_forces` and attribute access through
         :attr:`~AtomGroup.forces`.
 
-        .. versionadded:: 0.7.6
+        .. versionadded:: 0.7.7
         """
         if ts == None:
             ts = self.universe.trajectory.ts
@@ -1209,7 +1211,7 @@ class AtomGroup(object):
                 For more control use the :meth:`~AtomGroup.get_forces` and
                 :meth:`~AtomGroup.set_forces` methods.
 
-                .. versionadded:: 0.7.6""")
+                .. versionadded:: 0.7.7""")
     
     
 
