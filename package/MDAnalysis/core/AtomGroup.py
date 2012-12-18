@@ -694,7 +694,7 @@ class AtomGroup(object):
 
         See [Dima2004]_ for background information.
 
-        .. versionadded:: 0.8
+        .. versionadded:: 0.7.7
         """
         masses = self.masses()
         recenteredpos = self.coordinates() - self.centerOfMass()
@@ -711,7 +711,7 @@ class AtomGroup(object):
 
         See [Dima2004]_ for background information.
 
-        .. versionadded:: 0.8
+        .. versionadded:: 0.7.7
         """
         masses = self.masses()
         recenteredpos = self.coordinates() - self.centerOfMass()
