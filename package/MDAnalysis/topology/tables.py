@@ -143,6 +143,8 @@ QR           RB
 BC           C
 AC           C
 
+AU            AU
+
 # other types are guessed from the name; see
 # topology.core.guess_atom_elements()
 """
@@ -159,18 +161,18 @@ TABLE_MASSES = """
 #------------ -----------
 # atomtype    mass
 #------------ -----------
-Ac    227.028
-Al    26.981539
-Am    243
-Sb    121.757
-Ar    39.948
-As    74.92159
-At    210
-Ba    137.327
-Bk    247
-Be    9.012182
-Bi    208.98037
-Bh    262
+AC    227.028
+AL    26.981539
+AM    243
+SB    121.757
+AR    39.948
+AS    74.92159
+AT    210
+BA    137.327
+BK    247
+BE    9.012182
+BI    208.98037
+BH    262
 B     10.811
 BR    79.90400
 Cd    112.411
@@ -195,7 +197,7 @@ Fr    223
 Gd    157.25
 Ga    69.723
 Ge    72.61
-Au    196.96654
+AU    196.96654
 Hf    178.49
 Hs    265
 HE    4.00260
@@ -248,27 +250,27 @@ Sc    44.95591
 Sg    263
 Se    78.96
 Si    28.0855
-Ag    107.8682
-Na    22.989768
-Sr    87.62
+AG    107.8682
+NA    22.989768
+SR    87.62
 S     32.06000
-Ta    180.9479
-Tc    98
-Te    127.6
-Tb    158.92534
-Tl    204.3833
-Th    232.0381
-Tm    168.93421
-Sn    118.71
-Ti    47.88
+TA    180.9479
+TC    98
+TE    127.6
+TB    158.92534
+TL    204.3833
+TH    232.0381
+TM    168.93421
+SN    118.71
+TI    47.88
 W     183.85
 U     238.0289
 V     50.9415
-Xe    131.29
-Yb    173.04
+XE    131.29
+YB    173.04
 Y     88.90585
 ZN    65.37000
-Zr    91.224
+ZR    91.224
 """
 
 #: Dictionary table with atomic masses in u, indexed by the element from
