@@ -14,4 +14,4 @@ examples/eigenvalues.dat
 examples/output.txt
 .project
 .pydevproject
-.settings/
+.settings
