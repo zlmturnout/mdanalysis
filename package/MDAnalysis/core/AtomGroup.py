@@ -268,13 +268,14 @@ class Atom(object):
     __slots__ = ("number", "id", "name", "type", "resname", "resid", "segid",
                  "mass", "charge", "residue", "segment", "bonds", "angles", "torsions",
                  "__universe",
-                 "radius", "bfactor", "resnum", "serial")
+                 "radius", "bfactor", "resnum", "serial", "altLoc")
 
     def __init__(self, number, name, type, resname, resid, segid, mass, charge,
                  residue=None, segment=None, radius=None, bfactor=None,
-                 resnum=None, serial=None):
+                 resnum=None, serial=None, altLoc=None):
         self.number = number
         self.name = name
+        self.altLoc = altLoc
         self.type = str(type)   # always a string (needed for selections)
         self.resname = resname
         self.resid = resid
@@ -293,7 +294,7 @@ class Atom(object):
 
     def __repr__(self):
         return "< Atom " + repr(self.number+1) + ": name " + repr(self.name) +" of type " + \
-               repr(self.type) + " of resname " + repr(self.resname) + ", resid " +repr(self.resid) + " and segid " +repr(self.segid)+'>'
+               repr(self.type) + " of resname " + repr(self.resname) + ", resid " +repr(self.resid) + " and segid " +repr(self.segid) + ("" if not self.altLoc else " and altloc {}".format(repr(self.altLoc))) +'>'
 
     def __cmp__(self, other):
         return cmp(self.number, other.number)
@@ -1815,7 +1816,7 @@ class AtomGroup(object):
         ax = rotaxis(p, vector)
         #print "principal[%d] = %r" % (axis, p)
         #print "axis = %r, angle = %f deg" % (ax, angle)
-        return self.rotateby(angle, ax)
+        return self.universe.atoms.rotateby(angle, ax)
 
     def packIntoBox(self, box=None, inplace=True):
         r"""Shift all atoms in this group to be within the primary unit cell.
@@ -1872,7 +1873,7 @@ class AtomGroup(object):
         """Selection of atoms using the MDAnalysis selection syntax.
 
         AtomGroup.selectAtoms(selection[,selection[,...]], [groupname=atomgroup[,groupname=atomgroup[,...]]])
-
+        
         .. SeeAlso:: :meth:`Universe.selectAtoms`
         """
         import Selection     # can ONLY import in method, otherwise cyclical import!
@@ -1886,7 +1887,7 @@ class AtomGroup(object):
                 #atomselections.append(Selection.Parser.parse(sel).apply(self))
             #return tuple(atomselections)
             return atomgrp
-
+    
     def write(self,filename=None,format="PDB",filenamefmt="%(trjname)s_%(frame)d", **kwargs):
         """Write AtomGroup to a file.
 
@@ -2994,7 +2995,7 @@ class Universe(object):
                 #atomselections.append(Selection.Parser.parse(sel).apply(self))
             #return tuple(atomselections)
             return atomgrp
-
+    select = selectAtoms
     def __repr__(self):
         return '<'+self.__class__.__name__+' with '+repr(len(self.atoms))+' atoms' \
                 +(" and %d bonds" % len(self.bonds) \
