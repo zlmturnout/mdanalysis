@@ -386,7 +386,7 @@ def guess_atom_element(atomname):
         return atomname[0]
 
 
-def guess_bonds(atoms, coords, fudge_factor=0.72, vdwradii=None):
+def guess_bonds(atoms, coords, fudge_factor=0.72, vdwradii=None, lower_bound=0.1):
     """Guess if bonds exist between two atoms based on their distance.
 
     Bond between two atoms is created, if the two atoms are within
@@ -403,6 +403,11 @@ def guess_bonds(atoms, coords, fudge_factor=0.72, vdwradii=None):
     :data:`MDAnalysis.topology.tables.vdwradii` or a user-specified
     table can be provided as a dictionary in the keyword argument
     *vdwradii*. Atoms are found by their :attr:`Atom.type`.
+    
+    *lower_bound* defines a heuristic cutoff below which a bond is too short to 
+    exist. This is useful for parsing PDB with altloc records where atoms with 
+    altloc A and B maybe very close together and there should be no chemical 
+    bond between them. 
 
     .. warning::
 
@@ -445,7 +450,7 @@ def guess_bonds(atoms, coords, fudge_factor=0.72, vdwradii=None):
             continue
           
         # filter out unusually short bonds - like the ones detected between identical atoms with different altloc records
-        if dist[x] <= 0.1: continue
+        if dist[x] <= lower_bound: continue
         #print "BOND", ((r1 + r2) * 10 * fudge_factor), dist[i,j]
         bonds.add(frozenset([a1.number, a2.number]))  # orbeckst: Atom.number are 0-based, do not add 1.
 

@@ -2918,6 +2918,11 @@ class Universe(object):
                 a selector for a single atom consisting of segid resid atomname,
                 e.g. ``DMPC 1 C2`` selects the C2 carbon of the first residue of the DMPC
                 segment
+            altloc *alternative-location*
+                a selection for atoms where alternative locations are available, 
+                which is often the case with high-resolution crystal structures
+                e.g. `resid 4 and resname ALA and altloc B` selects only the atoms
+                of ALA-4 that have an altloc B record.
 
         **Boolean**
 
@@ -2995,7 +3000,7 @@ class Universe(object):
                 #atomselections.append(Selection.Parser.parse(sel).apply(self))
             #return tuple(atomselections)
             return atomgrp
-    select = selectAtoms
+    
     def __repr__(self):
         return '<'+self.__class__.__name__+' with '+repr(len(self.atoms))+' atoms' \
                 +(" and %d bonds" % len(self.bonds) \
