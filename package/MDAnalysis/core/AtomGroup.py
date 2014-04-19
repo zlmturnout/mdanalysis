@@ -1816,7 +1816,7 @@ class AtomGroup(object):
         ax = rotaxis(p, vector)
         #print "principal[%d] = %r" % (axis, p)
         #print "axis = %r, angle = %f deg" % (ax, angle)
-        return self.universe.atoms.rotateby(angle, ax)
+        return self.rotateby(angle, ax)
 
     def packIntoBox(self, box=None, inplace=True):
         r"""Shift all atoms in this group to be within the primary unit cell.
