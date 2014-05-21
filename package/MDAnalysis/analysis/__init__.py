@@ -75,7 +75,7 @@ Available analysis modules
 """
 __all__ = ['align', 'contacts', 'density', 'distances',
            'helanal', 'hbonds', 'leaflet', 'nuclinfo' ,
-           'rms', 'x3dna',
+           'rms', 'x3dna','rdc1', 'rdc2'
            ]
 
 import align
@@ -88,4 +88,5 @@ import leaflet
 import nuclinfo
 import x3dna
 import rms
+import rdc1, rdc2
 
