@@ -106,7 +106,7 @@ copyright = u'2005-2014, ' + authors
 from MDAnalysis import __version__ as MDA_version
 print 'version print:', MDA_version
 #packageversion = getattr(MDAnalysis,'__version__')
-packageversion = MDA_version
+packageversion = '0.8.2-dev'
 #print 'packageversion:', packageversion
 #for element in dir(packageversion):
     #print 'packageversion dir element:', element
