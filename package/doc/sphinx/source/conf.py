@@ -12,8 +12,8 @@
 # serve to show the default.
 
 import sys, os, platform
-for module in sys.modules:
-    print 'module name:', module
+#for module in sys.modules:
+    #print 'module name:', module
 
 class Mock(object):
 
@@ -42,6 +42,7 @@ MOCK_MODULES = ['MDAnalysis']
 
 for module_name in sys.modules.keys():
     if 'MDAnalysis' in module_name:
+        print 'Mocked:', module_name
         sys.modules[module_name] = Mock()
 
     
