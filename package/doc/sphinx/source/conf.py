@@ -27,7 +27,7 @@ class Mock(object):
     def __getattr__(cls, name):
         if name in ('__file__', '__path__'):
             return '/dev/null'
-        elif name == '__version__':
+        elif name in['__version__','__getnewargs__':
             return Mock()
         elif name[0] == name[0].upper():
             mockType = type(name, (), {})
