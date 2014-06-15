@@ -36,9 +36,9 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['MDAnalysis']
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = Mock()
+#MOCK_MODULES = ['MDAnalysis']
+#for mod_name in MOCK_MODULES:
+    #sys.modules[mod_name] = Mock()
 
 
     
@@ -103,9 +103,11 @@ copyright = u'2005-2014, ' + authors
 # Dynamically calculate the version
 #packageversion = __import__('MDAnalysis').__version__
 import MDAnalysis
-print 'version print:', MDAnalysis.__version__
-packageversion = getattr(MDAnalysis,'__version__')
-print 'packageversion:', packageversion
+from MDAnalysis import __version__ as MDA_version
+print 'version print:', MDA_version
+#packageversion = getattr(MDAnalysis,'__version__')
+packageversion = MDA_version
+#print 'packageversion:', packageversion
 #for element in dir(packageversion):
     #print 'packageversion dir element:', element
 #for element in packageversion.__dict__:
