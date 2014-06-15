@@ -98,6 +98,7 @@ copyright = u'2005-2014, ' + authors
 # Dynamically calculate the version
 packageversion = __import__('MDAnalysis').__version__
 print 'packageversion:', packageversion
+print 'packageversion dir:', dir(packageversion)
 
 # The short X.Y version.
 #version = '.'.join(packageversion.split('.')[:2])
