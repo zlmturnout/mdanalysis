@@ -28,7 +28,7 @@ class Mock(object):
         if name in ('__file__', '__path__'):
             return '/dev/null'
         elif name == '__version__':
-            return Mock().__version__
+            return Mock()
         elif name[0] == name[0].upper():
             mockType = type(name, (), {})
             mockType.__module__ = __name__
