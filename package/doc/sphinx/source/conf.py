@@ -102,7 +102,7 @@ copyright = u'2005-2014, ' + authors
 #
 # Dynamically calculate the version
 #packageversion = __import__('MDAnalysis').__version__
-import MDAnalysis
+#import MDAnalysis
 from MDAnalysis import __version__ as MDA_version
 print 'version print:', MDA_version
 #packageversion = getattr(MDAnalysis,'__version__')
