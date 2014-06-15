@@ -37,13 +37,9 @@ class Mock(object):
             return Mock()
 
 MOCK_MODULES = ['MDAnalysis']
-#for mod_name in MOCK_MODULES:
-    #sys.modules[mod_name] = Mock()
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = Mock()
 
-for module_name in sys.modules.keys():
-    if 'MDAnalysis' in module_name or module_name == 'MDAnalysis':
-        print 'Mocked:', module_name
-        sys.modules[module_name] = Mock()
 
     
 
