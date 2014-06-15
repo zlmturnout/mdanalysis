@@ -41,7 +41,7 @@ MOCK_MODULES = ['MDAnalysis']
     #sys.modules[mod_name] = Mock()
 
 for module_name in sys.modules.keys():
-    if 'MDAnalysis' in module_name:
+    if 'MDAnalysis' in module_name or module_name == 'MDAnalysis':
         print 'Mocked:', module_name
         sys.modules[module_name] = Mock()
 
