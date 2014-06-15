@@ -29,8 +29,8 @@ class Mock(object):
             return '/dev/null'
         elif name == '__version__':
             return Mock()
-        elif name == '__getnewargs__':
-            return ('empty','tuple')
+        #elif name == '__getnewargs__':
+            #return ('empty','tuple')
         elif name[0] == name[0].upper():
             mockType = type(name, (), {})
             mockType.__module__ = __name__
