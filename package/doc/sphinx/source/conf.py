@@ -45,6 +45,7 @@ sys.path.insert(5, os.path.abspath('../../../MDAnalysis/topology/'))
 sys.path.insert(6, os.path.abspath('../../../MDAnalysis/selections/'))
 sys.path.insert(7, os.path.abspath('../../../MDAnalysis/KDTree/'))
 sys.path.insert(8, os.path.abspath('../../../MDAnalysis/builder/'))
+sys.path.insert(9, os.path.abspath('../../../')) #setup.py is here -- hoping this will allow readthedocs to access it
 
 # -- General configuration -----------------------------------------------------
 
