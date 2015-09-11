@@ -1,4 +1,0 @@
-graft   data
-graft   scripts
-include README INSTALL CHANGELOG LICENSE AUTHORS TODO SUMMARY.txt
-include ez_setup.py setup.py
