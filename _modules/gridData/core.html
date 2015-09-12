@@ -104,9 +104,7 @@
 <span class="kn">import</span> <span class="nn">cPickle</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">OpenDX</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">gOpenMol</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">CCP4</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">OpenDX</span><span class="p">,</span> <span class="n">gOpenMol</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">gridDataWarning</span>
 
 <span class="k">def</span> <span class="nf">_grid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -170,8 +168,7 @@
                            <span class="s">&#39;PICKLE&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_export_python</span><span class="p">,</span>
                            <span class="s">&#39;PYTHON&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_export_python</span><span class="p">,</span>  <span class="c"># compatibility</span>
                            <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_loaders</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;CCP4&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_cpp4</span><span class="p">,</span>
-                         <span class="s">&#39;DX&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_dx</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loaders</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;DX&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_dx</span><span class="p">,</span>
                          <span class="s">&#39;PLT&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_plt</span><span class="p">,</span>
                          <span class="s">&#39;PICKLE&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_python</span><span class="p">,</span>
                          <span class="s">&#39;PYTHON&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_python</span><span class="p">,</span>      <span class="c"># compatibility</span>
@@ -376,15 +373,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">saved</span><span class="p">[</span><span class="s">&#39;grid&#39;</span><span class="p">],</span><span class="n">edges</span><span class="o">=</span><span class="n">saved</span><span class="p">[</span><span class="s">&#39;edges&#39;</span><span class="p">],</span><span class="n">metadata</span><span class="o">=</span><span class="n">saved</span><span class="p">[</span><span class="s">&#39;metadata&#39;</span><span class="p">])</span>
         <span class="k">del</span> <span class="n">saved</span>
 
-    <span class="k">def</span> <span class="nf">_load_cpp4</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initializes Grid from a CCP4 file.&quot;&quot;&quot;</span>
-        <span class="n">ccp4</span> <span class="o">=</span> <span class="n">CCP4</span><span class="o">.</span><span class="n">CCP4</span><span class="p">()</span>
-        <span class="n">ccp4</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">grid</span><span class="p">,</span><span class="n">edges</span> <span class="o">=</span> <span class="n">ccp4</span><span class="o">.</span><span class="n">histogramdd</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span><span class="n">edges</span><span class="o">=</span><span class="n">edges</span><span class="p">,</span><span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">_load_dx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initializes Grid from a OpenDX file.&quot;&quot;&quot;</span>
+
         <span class="n">dx</span> <span class="o">=</span> <span class="n">OpenDX</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">dx</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">grid</span><span class="p">,</span><span class="n">edges</span> <span class="o">=</span> <span class="n">dx</span><span class="o">.</span><span class="n">histogramdd</span><span class="p">()</span>

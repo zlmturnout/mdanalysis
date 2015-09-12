@@ -1110,6 +1110,9 @@ Properties referring to residue (<code class="docutils literal"><span class="pre
 or segment [<code class="docutils literal"><span class="pre">segids</span></code>] properties now yield arrays of length equal to
 <code class="docutils literal"><span class="pre">n_atoms</span></code></p>
 </div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.11.1: </span>Added occupancies property</p>
+</div>
 <dl class="attribute">
 <dt id="MDAnalysis.core.AtomGroup.AtomGroup._atoms">
 <code class="descname">_atoms</code><a class="headerlink" href="#MDAnalysis.core.AtomGroup.AtomGroup._atoms" title="Permalink to this definition">¶</a></dt>
@@ -1971,6 +1974,26 @@ flag to be used by default.</p>
 </div>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="MDAnalysis.core.AtomGroup.AtomGroup.occupancies">
+<code class="descname">occupancies</code><a class="headerlink" href="#MDAnalysis.core.AtomGroup.AtomGroup.occupancies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access occupancies of atoms</p>
+<p>If available can have a value between 0 and 1</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>ndarray</em> &#8211;
+occupancies for all atoms in AtomGroup</li>
+<li><strong>.. versionadded</strong> (<em>: 0.11.1</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="MDAnalysis.core.AtomGroup.AtomGroup.packIntoBox">
 <code class="descname">packIntoBox</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#MDAnalysis.core.AtomGroup.AtomGroup.packIntoBox" title="Permalink to this definition">¶</a></dt>
@@ -2711,6 +2734,19 @@ then each <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Atom.na
 </div>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version 0.11.0: </span>Made plural to make consistent with corresponding property</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="MDAnalysis.core.AtomGroup.AtomGroup.set_occupancies">
+<code class="descname">set_occupancies</code><span class="sig-paren">(</span><em>occupancies</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/MDAnalysis/core/AtomGroup.html#AtomGroup.set_occupancies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.core.AtomGroup.AtomGroup.set_occupancies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the occupancy for <em>all atoms</em> in the AtomGroup</p>
+<p>If <em>value</em> is a sequence of the same length as the <a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a>
+then each <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Atom.name" title="MDAnalysis.core.AtomGroup.Atom.name"><code class="xref py py-attr docutils literal"><span class="pre">Atom.name</span></code></a> is set to the corresponding value. If
+<em>value</em> is neither of length 1 (or a scalar) nor of the length of the
+<a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a> then a <code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> is raised.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 0.11.1.</span></p>
 </div>
 </dd></dl>
 
@@ -3457,6 +3493,9 @@ the fly&#8221;; they have to be included in the class definition).</p>
 via a weak reference only. This means that the <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Atom" title="MDAnalysis.core.AtomGroup.Atom"><code class="xref py py-class docutils literal"><span class="pre">Atom</span></code></a>, and
 any <a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a> it is in, are only relevant while the
 originating <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe" title="MDAnalysis.core.AtomGroup.Universe"><code class="xref py py-class docutils literal"><span class="pre">Universe</span></code></a> is in scope.</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.11.1: </span>Added occupancy property. Can get and set.</p>
+</div>
 <dl class="attribute">
 <dt id="MDAnalysis.core.AtomGroup.Atom.index">
 <code class="descname">index</code><a class="headerlink" href="#MDAnalysis.core.AtomGroup.Atom.index" title="Permalink to this definition">¶</a></dt>
@@ -3680,6 +3719,26 @@ does not contain velocities.</p>
 <dt id="MDAnalysis.core.AtomGroup.Atom.number">
 <code class="descname">number</code><a class="headerlink" href="#MDAnalysis.core.AtomGroup.Atom.number" title="Permalink to this definition">¶</a></dt>
 <dd><p>The index of this atom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MDAnalysis.core.AtomGroup.Atom.occupancy">
+<code class="descname">occupancy</code><a class="headerlink" href="#MDAnalysis.core.AtomGroup.Atom.occupancy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access occupancy values.</p>
+<p>If available can have a value between 0 and 1</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>float</em> &#8211;
+occupancy of Atom</li>
+<li><strong>.. versionadded</strong> (<em>: 0.11.1</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">

@@ -521,7 +521,8 @@
                       <span class="s">&#39;resnum&#39;</span><span class="p">:</span> <span class="s">&#39;resnums&#39;</span><span class="p">,</span>
                       <span class="s">&#39;altLoc&#39;</span><span class="p">:</span> <span class="s">&#39;altLocs&#39;</span><span class="p">,</span>
                       <span class="s">&#39;serial&#39;</span><span class="p">:</span> <span class="s">&#39;serials&#39;</span><span class="p">,</span>
-                      <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;values&#39;</span><span class="p">}</span>
+                      <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;values&#39;</span><span class="p">,</span>
+                      <span class="s">&#39;occupancy&#39;</span><span class="p">:</span> <span class="s">&#39;occupancies&#39;</span><span class="p">}</span>
 <span class="c"># And the return route</span>
 <span class="n">_SINGULAR_PROPERTIES</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_PLURAL_PROPERTIES</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
@@ -553,6 +554,8 @@
 <span class="sd">       Changed references to :class:`Universe` to be weak.</span>
 <span class="sd">       Renamed atom.number to atom.index</span>
 <span class="sd">       Renamed atom.torsions to atom.dihedrals</span>
+<span class="sd">    .. versionchanged:: 0.11.1</span>
+<span class="sd">       Added occupancy property. Can get and set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span>
@@ -678,6 +681,38 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">NoDataError</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s">&quot;Timestep does not contain velocities&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">occupancy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Access occupancy values.</span>
+
+<span class="sd">        If available can have a value between 0 and 1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            occupancy of Atom</span>
+
+<span class="sd">        .. versionadded:: 0.11.1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s">&#39;Timestep does not contain occupancy&#39;</span><span class="p">)</span>
+
+    <span class="nd">@occupancy.setter</span>
+    <span class="k">def</span> <span class="nf">occupancy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_occupancy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set occupancy for an atom</span>
+
+<span class="sd">        If no occupancies are set in the universe of the atom the occupancy</span>
+<span class="sd">        of the other atoms will be set to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">_occupancy</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">n_atoms</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">_occupancy</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -885,6 +920,8 @@
 <span class="sd">       Properties referring to residue (``resids``, ``resnames``, ``resnums``)</span>
 <span class="sd">       or segment [``segids``] properties now yield arrays of length equal to</span>
 <span class="sd">       ``n_atoms``</span>
+<span class="sd">    .. versionchanged:: 0.11.1</span>
+<span class="sd">       Added occupancies property</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># for generalized __getitem__ __iter__ and __len__</span>
     <span class="c"># (override _containername for ResidueGroup and SegmentGroup)</span>
@@ -1202,6 +1239,32 @@
 </div>
     <span class="n">totalMass</span> <span class="o">=</span> <span class="n">deprecate</span><span class="p">(</span><span class="n">total_mass</span><span class="p">,</span> <span class="n">old_name</span><span class="o">=</span><span class="s">&#39;totalMass&#39;</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="s">&#39;total_mass&#39;</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">occupancies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Access occupancies of atoms</span>
+
+<span class="sd">        If available can have a value between 0 and 1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray</span>
+<span class="sd">            occupancies for all atoms in AtomGroup</span>
+
+<span class="sd">        .. versionadded:: 0.11.1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s">&#39;Timestep does not contain occupancy&#39;</span><span class="p">)</span>
+
+    <span class="nd">@occupancies.setter</span>
+    <span class="k">def</span> <span class="nf">occupancies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">n_atoms</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;occupancy&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">charges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Array of partial charges of the atoms (as defined in the topology)</span>
@@ -1683,6 +1746,18 @@
     <span class="c"># override for ResidueGroup, SegmentGroup accordingly</span>
     <span class="nb">set</span> <span class="o">=</span> <span class="n">_set_atoms</span>
 
+<div class="viewcode-block" id="AtomGroup.set_occupancies"><a class="viewcode-back" href="../../../documentation_pages/core/AtomGroup.html#MDAnalysis.core.AtomGroup.AtomGroup.set_occupancies">[docs]</a>    <span class="k">def</span> <span class="nf">set_occupancies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">occupancies</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the occupancy for *all atoms* in the AtomGroup</span>
+
+<span class="sd">        If *value* is a sequence of the same length as the :class:`AtomGroup`</span>
+<span class="sd">        then each :attr:`Atom.name` is set to the corresponding value. If</span>
+<span class="sd">        *value* is neither of length 1 (or a scalar) nor of the length of the</span>
+<span class="sd">        :class:`AtomGroup` then a :exc:`ValueError` is raised.</span>
+
+<span class="sd">        .. versionadded:: 0.11.1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancies</span> <span class="o">=</span> <span class="n">occupancies</span>
+</div>
 <div class="viewcode-block" id="AtomGroup.set_names"><a class="viewcode-back" href="../../../documentation_pages/core/AtomGroup.html#MDAnalysis.core.AtomGroup.AtomGroup.set_names">[docs]</a>    <span class="k">def</span> <span class="nf">set_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the atom names to string for *all atoms* in the AtomGroup.</span>
 
