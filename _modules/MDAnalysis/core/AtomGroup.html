@@ -3829,7 +3829,8 @@
                 <span class="c"># or if file is known as a topology &amp; coordinate file, use that</span>
                 <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">fmt</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">guess_format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">_topology_coordinates_readers</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">fmt</span> <span class="ow">in</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">_trajectory_readers</span>
+                    <span class="ow">and</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">_topology_parsers</span><span class="p">):</span>
                     <span class="n">coordinatefile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
             <span class="c"># Fix by SB: make sure coordinatefile is never an empty tuple</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinatefile</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
