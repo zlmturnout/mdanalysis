@@ -162,8 +162,9 @@
     <span class="k">def</span> <span class="nf">_parseatoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">iatom</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
-        
+
         <span class="k">with</span> <span class="n">openany</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">resid_prev</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># resid looping hack</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c"># Remove extra spaces</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c"># Skip line if empty</span>
@@ -185,8 +186,14 @@
                     <span class="n">chainID</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">21</span><span class="p">:</span><span class="mi">22</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c"># empty chainID is a single space &#39; &#39;!</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s">&quot;XPDB&quot;</span><span class="p">:</span>  <span class="c"># fugly but keeps code DRY</span>
                         <span class="n">resSeq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">27</span><span class="p">])</span>  <span class="c"># extended non-standard format used by VMD</span>
+                        <span class="n">resid</span> <span class="o">=</span> <span class="n">resSeq</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">resSeq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">22</span><span class="p">:</span><span class="mi">26</span><span class="p">])</span>
+                        <span class="n">resid</span> <span class="o">=</span> <span class="n">resSeq</span>
+
+                        <span class="k">while</span> <span class="n">resid</span> <span class="o">-</span> <span class="n">resid_prev</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">5000</span><span class="p">:</span>
+                            <span class="n">resid</span> <span class="o">+=</span> <span class="mi">10000</span>
+                        <span class="n">resid_prev</span> <span class="o">=</span> <span class="n">resid</span>
                         <span class="c"># insertCode = _c(27, 27, str)  # not used</span>
                         <span class="c"># occupancy = float(line[54:60])</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -204,11 +211,12 @@
                     <span class="n">mass</span> <span class="o">=</span> <span class="n">get_atom_mass</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
                     <span class="c"># charge = guess_atom_charge(name)</span>
                     <span class="n">charge</span> <span class="o">=</span> <span class="mf">0.0</span>
-                    
-                    <span class="n">atom</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="n">iatom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">atomtype</span><span class="p">,</span> <span class="n">resName</span><span class="p">,</span> <span class="n">resSeq</span><span class="p">,</span>
+
+                    <span class="n">atom</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="n">iatom</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">atomtype</span><span class="p">,</span> <span class="n">resName</span><span class="p">,</span> <span class="n">resid</span><span class="p">,</span>
                                 <span class="n">segid</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span>
                                 <span class="n">bfactor</span><span class="o">=</span><span class="n">tempFactor</span><span class="p">,</span> <span class="n">serial</span><span class="o">=</span><span class="n">serial</span><span class="p">,</span>
-                                <span class="n">altLoc</span><span class="o">=</span><span class="n">altLoc</span><span class="p">,</span> <span class="n">universe</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_u</span><span class="p">)</span>
+                                <span class="n">altLoc</span><span class="o">=</span><span class="n">altLoc</span><span class="p">,</span> <span class="n">universe</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_u</span><span class="p">,</span>
+                                <span class="n">resnum</span><span class="o">=</span><span class="n">resSeq</span><span class="p">)</span>
                     <span class="n">iatom</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
 
