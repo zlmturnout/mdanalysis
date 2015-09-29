@@ -583,12 +583,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bfactor</span> <span class="o">=</span> <span class="n">bfactor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serial</span> <span class="o">=</span> <span class="n">serial</span>
-        <span class="c"># Beware: Atoms hold only weakrefs to the universe, enforced</span>
-        <span class="c">#  throught the Atom.universe setter.</span>
-        <span class="k">if</span> <span class="n">universe</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">universe</span> <span class="o">=</span> <span class="n">universe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span> <span class="o">=</span> <span class="n">universe</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s">&quot;&lt;Atom {idx}: {name} of type {t} of resname {rname}, &quot;</span>
@@ -749,18 +744,15 @@
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">universe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;a pointer back to the Universe&quot;&quot;&quot;</span>
-        <span class="c"># Beware: Atoms hold only weakrefs to the universe. We call them to get hard references.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;A pointer back to the Universe of this Atom&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s">&quot;This Atom does not belong to a Universe&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="s">&quot;Atom {0} is not assigned to a Universe&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span>
 
     <span class="nd">@universe.setter</span>
-    <span class="k">def</span> <span class="nf">universe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">universe</span><span class="p">):</span>
-        <span class="c"># Beware: Atoms hold only weakrefs to the universe</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">universe</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">universe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_universe</span> <span class="o">=</span> <span class="n">new</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bonded_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1069,8 +1061,8 @@
         <span class="sd">&quot;&quot;&quot;The universe to which the atoms belong (read-only).&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">universe</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s">&quot;Zero length AtomGroup have no Universe&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AtomGroup.__len__"><a class="viewcode-back" href="../../../documentation_pages/core/AtomGroup.html#MDAnalysis.core.AtomGroup.AtomGroup.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Number of atoms in the group&quot;&quot;&quot;</span>
@@ -1165,14 +1157,17 @@
             <span class="n">n_atoms</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">universe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span>
+        <span class="k">except</span> <span class="n">NoDataError</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+
         <span class="k">try</span><span class="p">:</span> <span class="c"># We want to get the ChainReader case, where the trajectory has multiple filenames</span>
-            <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">filenames</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">universe</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">filenames</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">filename</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">anchor_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">atoms</span><span class="p">),</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">universe</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">universe</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">filename</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">universe</span><span class="o">.</span><span class="n">anchor_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">universe</span><span class="o">.</span><span class="n">atoms</span><span class="p">),</span>
+                <span class="n">universe</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">indices</span><span class="p">,</span> <span class="n">anchor_name</span><span class="p">,</span> <span class="n">universe_n_atoms</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
@@ -1187,9 +1182,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">test_universe</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">_atoms</span><span class="p">)</span>
                 <span class="k">return</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">((</span><span class="s">&quot;Couldn&#39;t find a suitable Universe to unpickle AtomGroup &quot;</span>
-                <span class="s">&quot;onto. (needed a universe with {}{} atoms, topology filename: {}, and &quot;</span>
-                <span class="s">&quot;trajectory filename: {}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="s">&quot;anchor_name: {}, &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">anchor_name</span><span class="p">)</span> <span class="k">if</span> <span class="n">anchor_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+                <span class="s">&quot;onto. (needed a universe with {}{} atoms, topology filename: &#39;{}&#39;, and &quot;</span>
+                <span class="s">&quot;trajectory filename: &#39;{}&#39;)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="s">&quot;anchor_name: &#39;{}&#39;, &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">anchor_name</span><span class="p">)</span> <span class="k">if</span> <span class="n">anchor_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
                         <span class="o">*</span><span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
 
     <span class="nd">@property</span>
@@ -4674,11 +4669,6 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c"># A __del__ method can be added to the Universe, but bear in mind that for</span>
-    <span class="c"># that to work objects under Universe that hold backreferences to it can</span>
-    <span class="c"># only do so using weakrefs. (Issue #297)</span>
-    <span class="c">#def __del__(self):</span>
-    <span class="c">#    pass</span>
 </div>
 <div class="viewcode-block" id="as_Universe"><a class="viewcode-back" href="../../../documentation_pages/core/AtomGroup.html#MDAnalysis.core.AtomGroup.as_Universe">[docs]</a><span class="k">def</span> <span class="nf">as_Universe</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a universe from the input arguments.</span>
