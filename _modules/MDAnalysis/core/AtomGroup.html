@@ -1547,7 +1547,7 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Unknown format=&#39;{0}&#39;: must be one of: {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">format</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">formats</span><span class="p">)))</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">sequence</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">util</span><span class="o">.</span><span class="n">convert_aa_code</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resnames</span><span class="p">])</span>
+            <span class="n">sequence</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">util</span><span class="o">.</span><span class="n">convert_aa_code</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">residues</span><span class="o">.</span><span class="n">resnames</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;AtomGroup contains a residue name &#39;{0}&#39; that &quot;</span>
                              <span class="s">&quot;does not have a IUPAC protein 1-letter &quot;</span>
@@ -1866,8 +1866,6 @@
 <span class="sd">        .. versionchanged:: 0.11.0</span>
 <span class="sd">           Made plural to make consistent with corresponding property</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">MDAnalysis.topology.core</span> <span class="kn">import</span> <span class="n">build_residues</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;resname&quot;</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">conversion</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 </div>
     <span class="n">set_resname</span> <span class="o">=</span> <span class="n">deprecate</span><span class="p">(</span><span class="n">set_resnames</span><span class="p">,</span> <span class="n">old_name</span><span class="o">=</span><span class="s">&#39;set_resname&#39;</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="s">&#39;set_resnames&#39;</span><span class="p">)</span>
