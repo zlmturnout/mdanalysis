@@ -336,6 +336,9 @@
             <span class="n">S</span><span class="o">.</span><span class="n">F_HARMONIC</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">F_IDIHS</span>
         <span class="p">]:</span>
             <span class="n">do_harm</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_RESTRANGLES</span><span class="p">]:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># harmonic.rA</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># harmonic.krA</span>
         <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_LINEAR_ANGLES</span><span class="p">]:</span>
             <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># linangle.klinA</span>
             <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># linangle.aA</span>
@@ -449,6 +452,9 @@
                 <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># pdihs_cpB</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">unpack_int</span><span class="p">()</span>  <span class="c"># pdihs_mult</span>
 
+        <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_RESTRDIHS</span><span class="p">]:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># pdihs.phiA</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># pdihs.cpA</span>
         <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_DISRES</span><span class="p">]:</span>
             <span class="n">data</span><span class="o">.</span><span class="n">unpack_int</span><span class="p">()</span>  <span class="c"># disres.label</span>
             <span class="n">data</span><span class="o">.</span><span class="n">unpack_int</span><span class="p">()</span>  <span class="c"># disres.type</span>
@@ -485,6 +491,15 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">do_rvec</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c"># posres.pos0B</span>
                 <span class="n">do_rvec</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c"># posres.fcB</span>
+
+        <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_FBPOSRES</span><span class="p">]:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_int</span><span class="p">()</span>   <span class="c"># fbposres.geom</span>
+            <span class="n">do_rvec</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>       <span class="c"># fbposres.pos0</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># fbposres.r</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">unpack_real</span><span class="p">()</span>  <span class="c"># fbposres.k</span>
+
+        <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_CBTDIHS</span><span class="p">]:</span>
+            <span class="n">ndo_real</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">NR_CBTDIHS</span><span class="p">)</span>  <span class="c"># cbtdihs.cbtcA</span>
 
         <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="n">F_RBDIHS</span><span class="p">]:</span>
             <span class="n">ndo_real</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">NR_RBDIHS</span><span class="p">)</span>  <span class="c"># iparams_rbdihs_rbcA</span>
@@ -1027,7 +1042,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2005-2015, Naveen Michaud-Agrawal, Elizabeth J. Denning, Joshua Adelman,
+        &copy; Copyright 2005-2015, Naveen Michaud-Agrawal, Elizabeth J. Denning, Joshua Adelman, Jonathan Barnoud,
     Christian Beckstein (logo), Alejandro Bernardin, Sébastien Buchoux,
     David Caplan, Matthieu Chavent, Xavier Deupi, Jan Domański, David L. Dotson
     Lennard van der Feltz, Philip Fowler, Joseph Goose, Richard J. Gowers, Lukas Grossar,
