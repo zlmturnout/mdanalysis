@@ -104,8 +104,7 @@
   <span class="target" id="module-MDAnalysis.topology.TPRParser"></span><div class="section" id="gromacs-portable-run-input-tpr-format-parser">
 <h1>4.13. Gromacs portable run input TPR format parser<a class="headerlink" href="#gromacs-portable-run-input-tpr-format-parser" title="Permalink to this headline">¶</a></h1>
 <p>The <a class="reference internal" href="#module-MDAnalysis.topology.TPRParser" title="MDAnalysis.topology.TPRParser"><code class="xref py py-mod docutils literal"><span class="pre">TPRParser</span></code></a> module allows reading of a
-<a class="reference external" href="http://www.gromacs.org">Gromacs</a> portable run input file (a <a class="reference external" href="http://manual.gromacs.org/current/online/tpr.html">TPR file</a>). At the moment, only
-atom information is read and used to build a minimal topology. Because
+<a class="reference external" href="http://www.gromacs.org">Gromacs</a> portable run input file (a <a class="reference external" href="http://manual.gromacs.org/current/online/tpr.html">TPR file</a>). Because
 the file format of the TPR file is changing rapidly, not all versions
 are currently supported. The known working versions and the
 approximate Gromacs release numbers are listed in the table
@@ -165,6 +164,25 @@ approximate Gromacs release numbers are listed in the table
 <p>For further discussion and notes see <a class="reference external" href="https://github.com/MDAnalysis/mdanalysis/issues/2">Issue 2</a>. Also add a comment to
 <a class="reference external" href="https://github.com/MDAnalysis/mdanalysis/issues/2">Issue 2</a> if a new or different TPR file format version should be
 supported.</p>
+<p>Bonded interactions available in Gromacs are described in table 5.5 of the
+<a class="reference external" href="http://manual.gromacs.org/documentation/5.1/manual-5.1.pdf">Gromacs manual</a>. The following ones are used to build the topology (see
+<a class="reference external" href="https://github.com/MDAnalysis/mdanalysis/pull/463">Issue 463</a>):</p>
+<ul class="simple">
+<li>bonds: regular bonds (type 1), G96 bonds (type 2), Morse (type 3),
+cubic bonds (type 4), connections (type 5), harmonic potentials (type 6),
+FENE bonds (type 7), restraint potentials (type 10),
+tabulated potential with exclusion/connection (type 8),
+tabulated potential without exclusion/connection (type 9), constraints with
+exclusion/connection (type 1), constraints without exclusion/connection (type
+2)</li>
+<li>angles: regular angles (type 1), G96 angles (type 2), cross bond-bond
+(type3), cross-bond-angle (type 4), Urey-Bradley (type 5), quartic angles
+(type 6), restricted bending potential (type 10), tabulated angles (type 8)</li>
+<li>dihedrals: proper dihedrals (type 1 and type 9), Ryckaert-Bellemans dihedrals
+(type 3), Fourier dihedrals (type 5), restricted dihedrals (type 10),
+combined bending-torsion potentials (type 11), tabulated dihedral (type 8)</li>
+<li>impropers: improper dihedrals (type 2), periodic improper dihedrals (type 4)</li>
+</ul>
 <div class="section" id="classes">
 <h2>4.13.1. Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -386,13 +404,11 @@ parser. Currently the following sections of the topology are parsed:</p>
 <ul class="simple">
 <li>Atoms: number, name, type, resname, resid, segid, mass, charge,
 [residue, segment, radius, bfactor, resnum]</li>
-<li>Bonds:</li>
-<li>Angels:</li>
-<li>Dihedrals:</li>
-<li>Impropers:</li>
+<li>Bonds</li>
+<li>Angels</li>
+<li>Dihedrals</li>
+<li>Impropers</li>
 </ul>
-<p>Potential Bug: in the result of <strong class="program">gmxdump</strong>, the &#8220;Proper Dih.:&#8221;
-section is actually a list of Improper Dih.</p>
 <p>This tpr parser is written according to the following files</p>
 <ul class="simple">
 <li><code class="file docutils literal"><em><span class="pre">gromacs_dir</span></em><span class="pre">/src/kernel/gmxdump.c</span></code></li>
@@ -401,13 +417,13 @@ section is actually a list of Improper Dih.</p>
 <li><code class="file docutils literal"><em><span class="pre">gromacs_dir</span></em><span class="pre">/src/gmxlib/gmxfio_xdr.c</span></code></li>
 <li><code class="file docutils literal"><em><span class="pre">gromacs_dir</span></em><span class="pre">/include/gmxfiofio.h</span></code></li>
 </ul>
+<p>or their equivalent in more recent versions of Gromacs.</p>
 <p>The function <code class="xref py py-func docutils literal"><span class="pre">read_tpxheader()</span></code> is based on the
 <a class="reference external" href="https://github.com/MDAnalysis/mdanalysis/wiki/TPRReaderDevelopment">TPRReaderDevelopment</a> notes.  Functions with names starting with
 <code class="docutils literal"><span class="pre">read_</span></code> or <code class="docutils literal"><span class="pre">do_</span></code> are trying to be similar to those in
 <code class="file docutils literal"><span class="pre">gmxdump.c</span></code> or <code class="file docutils literal"><span class="pre">tpxio.c</span></code>, those with <code class="docutils literal"><span class="pre">extract_</span></code> are new.</p>
 <p>Wherever <code class="docutils literal"><span class="pre">fver_err(fver)</span></code> is used, it means the tpx version problem
-haven&#8217;t be resolved for those other than 58 and 73 (or gromacs version
-before 4.x)</p>
+has not been solved. Versions prior to Gromacs 4.0.x are not supported.</p>
 </div>
 </div>
 
