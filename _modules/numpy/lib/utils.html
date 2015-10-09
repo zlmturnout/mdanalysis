@@ -78,9 +78,13 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">numpy.core.numerictypes</span> <span class="kn">import</span> <span class="n">issubclass_</span><span class="p">,</span> <span class="n">issubsctype</span><span class="p">,</span> <span class="n">issubdtype</span>
 <span class="kn">from</span> <span class="nn">numpy.core</span> <span class="kn">import</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">ufunc</span><span class="p">,</span> <span class="n">asarray</span>
+
+<span class="c"># getargspec and formatargspec were removed in Python 3.6</span>
+<span class="kn">from</span> <span class="nn">numpy.compat</span> <span class="kn">import</span> <span class="n">getargspec</span><span class="p">,</span> <span class="n">formatargspec</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s">&#39;issubclass_&#39;</span><span class="p">,</span> <span class="s">&#39;issubsctype&#39;</span><span class="p">,</span> <span class="s">&#39;issubdtype&#39;</span><span class="p">,</span> <span class="s">&#39;deprecate&#39;</span><span class="p">,</span>
@@ -604,7 +608,7 @@
 
     <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">arguments</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">formatargspec</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="n">formatargspec</span><span class="p">(</span><span class="o">*</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="o">+</span><span class="n">arguments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">maxwidth</span><span class="p">:</span>
             <span class="n">argstr</span> <span class="o">=</span> <span class="n">_split_line</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span> <span class="n">maxwidth</span><span class="p">)</span>
@@ -619,8 +623,8 @@
         <span class="n">arguments</span> <span class="o">=</span> <span class="s">&quot;()&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="s">&#39;__init__&#39;</span><span class="p">):</span>
-                <span class="n">arguments</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">formatargspec</span><span class="p">(</span>
-                        <span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">__init__</span><span class="o">.</span><span class="n">__func__</span><span class="p">)</span>
+                <span class="n">arguments</span> <span class="o">=</span> <span class="n">formatargspec</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">__init__</span><span class="o">.</span><span class="n">__func__</span><span class="p">)</span>
                         <span class="p">)</span>
                 <span class="n">arglist</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;, &#39;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arglist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -662,8 +666,8 @@
         <span class="k">print</span><span class="p">(</span><span class="s">&quot;Instance of class: &quot;</span><span class="p">,</span> <span class="nb">object</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="s">&#39;__call__&#39;</span><span class="p">):</span>
-            <span class="n">arguments</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">formatargspec</span><span class="p">(</span>
-                    <span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">__call__</span><span class="o">.</span><span class="n">__func__</span><span class="p">)</span>
+            <span class="n">arguments</span> <span class="o">=</span> <span class="n">formatargspec</span><span class="p">(</span>
+                    <span class="o">*</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">__call__</span><span class="o">.</span><span class="n">__func__</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="n">arglist</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;, &#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arglist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -692,8 +696,8 @@
 
     <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">arguments</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">formatargspec</span><span class="p">(</span>
-                <span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">__func__</span><span class="p">)</span>
+        <span class="n">arguments</span> <span class="o">=</span> <span class="n">formatargspec</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">getargspec</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">__func__</span><span class="p">)</span>
                 <span class="p">)</span>
         <span class="n">arglist</span> <span class="o">=</span> <span class="n">arguments</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;, &#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arglist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -1049,7 +1053,7 @@
     <span class="kn">import</span> <span class="nn">inspect</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">members</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">members</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">x</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">members</span>
@@ -1076,111 +1080,71 @@
 <span class="sd">    This includes strings with lists, dicts and tuples using the abstract</span>
 <span class="sd">    syntax tree created by ``compiler.parse``.</span>
 
-<span class="sd">    For an example of usage, see `safe_eval`.</span>
+<span class="sd">    .. deprecated:: 1.10.0</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
 <span class="sd">    safe_eval</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># 2014-10-15, 1.10</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;SafeEval is deprecated in 1.10 and will be removed.&quot;</span><span class="p">,</span>
+                      <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="n">cls</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">__class__</span>
-            <span class="n">meth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;visit&#39;</span><span class="o">+</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">meth</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">__class__</span>
+        <span class="n">meth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;visit&#39;</span> <span class="o">+</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">meth</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unsupported source construct: </span><span class="si">%s</span><span class="s">&quot;</span>
-                              <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">__class__</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unsupported source construct: </span><span class="si">%s</span><span class="s">&quot;</span>
+                          <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">__class__</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">visitExpression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">getChildNodes</span><span class="p">():</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">visitExpression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">visitConst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">def</span> <span class="nf">visitNum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">n</span>
 
-        <span class="k">def</span> <span class="nf">visitDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-                    <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">items</span><span class="p">]</span>
-                    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">visitStr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">s</span>
 
-        <span class="k">def</span> <span class="nf">visitTuple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">nodes</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">visitBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">s</span>
 
-        <span class="k">def</span> <span class="nf">visitList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">visitDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">values</span><span class="p">)])</span>
 
-        <span class="k">def</span> <span class="nf">visitUnaryAdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">getChildNodes</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">visitTuple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">elts</span><span class="p">])</span>
 
-        <span class="k">def</span> <span class="nf">visitUnarySub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">getChildNodes</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">visitList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">elts</span><span class="p">]</span>
 
-        <span class="k">def</span> <span class="nf">visitName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;False&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">False</span>
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;True&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">True</span>
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">None</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unknown name: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">visitUnaryOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">ast</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">UAdd</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">operand</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">USub</span><span class="p">):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">operand</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unknown unary op: </span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="n">cls</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">__class__</span>
-            <span class="n">meth</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;visit&#39;</span> <span class="o">+</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">meth</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">visitName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">&#39;False&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">&#39;True&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unknown name: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unsupported source construct: </span><span class="si">%s</span><span class="s">&quot;</span>
-                              <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">__class__</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">visitNameConstant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
 
-        <span class="k">def</span> <span class="nf">visitExpression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">visitNum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">n</span>
-
-        <span class="k">def</span> <span class="nf">visitStr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">s</span>
-
-        <span class="k">def</span> <span class="nf">visitBytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">s</span>
-
-        <span class="k">def</span> <span class="nf">visitDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">values</span><span class="p">)])</span>
-
-        <span class="k">def</span> <span class="nf">visitTuple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">elts</span><span class="p">])</span>
-
-        <span class="k">def</span> <span class="nf">visitList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">elts</span><span class="p">]</span>
-
-        <span class="k">def</span> <span class="nf">visitUnaryOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">ast</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">UAdd</span><span class="p">):</span>
-                <span class="k">return</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">operand</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">USub</span><span class="p">):</span>
-                <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">operand</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unknown unary op: </span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">visitName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">&#39;False&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">False</span>
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">&#39;True&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">True</span>
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">None</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s">&quot;Unknown name: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">visitNameConstant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
 
 <span class="k">def</span> <span class="nf">safe_eval</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1225,28 +1189,10 @@
 <span class="sd">    SyntaxError: Unsupported source construct: compiler.ast.CallFunc</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># Local imports to speed up numpy&#39;s import time.</span>
-    <span class="kn">import</span> <span class="nn">warnings</span>
+    <span class="c"># Local import to speed up numpy&#39;s import time.</span>
+    <span class="kn">import</span> <span class="nn">ast</span>
 
-    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-        <span class="c"># compiler package is deprecated for 3.x, which is already solved</span>
-        <span class="c"># here</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">compiler</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">ast</span> <span class="kn">as</span> <span class="nn">compiler</span>
-
-    <span class="n">walker</span> <span class="o">=</span> <span class="n">SafeEval</span><span class="p">()</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">ast</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;eval&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
-        <span class="k">raise</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">walker</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
-        <span class="k">raise</span>
-
+    <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 <span class="c">#-----------------------------------------------------------------------------</span>
 </pre></div>
 
