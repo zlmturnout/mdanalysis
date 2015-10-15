@@ -230,7 +230,7 @@ under <a class="reference internal" href="#xyz-format"><span>XYZ format</span></
 
 <dl class="class">
 <dt id="MDAnalysis.coordinates.XYZ.XYZWriter">
-<em class="property">class </em><code class="descclassname">MDAnalysis.coordinates.XYZ.</code><code class="descname">XYZWriter</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/MDAnalysis/coordinates/XYZ.html#XYZWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.XYZ.XYZWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">MDAnalysis.coordinates.XYZ.</code><code class="descname">XYZWriter</code><span class="sig-paren">(</span><em>filename</em>, <em>n_atoms=None</em>, <em>atoms='X'</em>, <em>convert_units=None</em>, <em>remark='default'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/MDAnalysis/coordinates/XYZ.html#XYZWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.XYZ.XYZWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes an XYZ file</p>
 <p>The XYZ file format is not formally defined. This writer follows
 the VMD implementation for the molfile <a class="reference external" href="http://www.ks.uiuc.edu/Research/vmd/plugins/molfile/xyzplugin.html">xyzplugin</a>.</p>
@@ -239,27 +239,25 @@ the VMD implementation for the molfile <a class="reference external" href="http:
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>*filename*</strong> &#8211; file name of trajectory file. If it ends with &#8220;gz&#8221; then the file
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; filename of trajectory file. If it ends with &#8220;gz&#8221; then the file
 will be gzip-compressed; if it ends with &#8220;bz2&#8221; it will be bzip2
-compressed.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Keywords:</th><td class="field-body"><dl class="first last docutils">
-<dt><em>atoms</em></dt>
-<dd><p class="first">Provide atom names: This can be a list of names or an
+compressed.</li>
+<li><strong>n_atoms</strong> (<em>int (optional)</em>) &#8211; Number of atoms in trajectory. By default assume that this is None
+and that this file is used to store several different models
+instead of a single trajectory. If a number is provided each
+written TimeStep has to contain the same number of atoms.</li>
+<li><strong>atoms</strong> (<em>str | list (optional)</em>) &#8211; Provide atom names: This can be a list of names or an
 <code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code>.  If none is provided, atoms will
 be called &#8216;X&#8217; in the output. These atom names will be
 used when a trajectory is written from raw
 <code class="xref py py-class docutils literal"><span class="pre">Timestep</span></code> objects which do not contain atom
-information.</p>
-<p class="last">If you write a <code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code> with
+information. If you write a <code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code> with
 <a class="reference internal" href="#MDAnalysis.coordinates.XYZ.XYZWriter.write" title="MDAnalysis.coordinates.XYZ.XYZWriter.write"><code class="xref py py-meth docutils literal"><span class="pre">XYZWriter.write()</span></code></a> then atom information is taken
-at each step and <em>atoms</em> is ignored.</p>
-</dd>
-<dt><em>remark</em></dt>
-<dd><p class="first last">single line of text (&#8220;molecule name&#8221;)</p>
-</dd>
-</dl>
+at each step and <em>atoms</em> is ignored.</li>
+<li><strong>remark</strong> (<em>str (optional)</em>) &#8211; single line of text (&#8220;molecule name&#8221;). By default write MDAnalysis
+version</li>
+</ul>
 </td>
 </tr>
 </tbody>
