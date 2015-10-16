@@ -316,6 +316,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">atom</span><span class="p">])</span>
     <span class="n">walked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">ag_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">)</span>
 
     <span class="n">nloops</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">):</span>
@@ -326,7 +327,7 @@
         <span class="n">todo</span> <span class="o">=</span> <span class="n">seen</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">walked</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">todo</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">atom</span><span class="o">.</span><span class="n">bonded_atoms</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">atomgroup</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">ag_set</span><span class="p">:</span>
                     <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
             <span class="n">walked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
 
@@ -443,6 +444,7 @@
     <span class="n">processed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c"># Who have I already done?</span>
     <span class="n">ref_points</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">ref</span><span class="p">])</span>  <span class="c"># Who is safe to use as reference point?</span>
 
+    <span class="n">ag_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">)</span>
     <span class="n">nres</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atomgroup</span><span class="p">)</span>  <span class="c"># total size of the problem</span>
     <span class="n">nloops</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nres</span><span class="p">:</span>  <span class="c"># While all atoms aren&#39;t correct</span>
@@ -460,7 +462,7 @@
             <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">atom</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
                 <span class="n">other</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">partner</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
                 <span class="c"># Avoid atoms not in our scope</span>
-                <span class="k">if</span> <span class="n">other</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">atomgroup</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">other</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ag_set</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">ref_points</span><span class="p">:</span>
                     <span class="k">continue</span>
