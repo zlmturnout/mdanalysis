@@ -58,6 +58,14 @@
             <p class="logo"><a href="../../index.html">
               <img class="logo" src="../../_static/mdanalysis-logo-200x150.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5.7. GRO file format &#8212; <code class="docutils literal"><span class="pre">MDAnalysis.coordinates.GRO</span></code></a><ul>
+<li><a class="reference internal" href="#growriter-format-strings">5.7.1. GROWriter format strings</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="GMS.html"
                         title="previous chapter">5.6. GAMESS trajectory reader &#8212; <code class="docutils literal"><span class="pre">MDAnalysis.coordinates.GMS</span></code></a></p>
@@ -96,6 +104,33 @@
 <h1>5.7. GRO file format &#8212; <a class="reference internal" href="#module-MDAnalysis.coordinates.GRO" title="MDAnalysis.coordinates.GRO"><code class="xref py py-mod docutils literal"><span class="pre">MDAnalysis.coordinates.GRO</span></code></a><a class="headerlink" href="#gro-file-format-mdanalysis-coordinates-gro" title="Permalink to this headline">¶</a></h1>
 <p>Classes to read and write <a class="reference external" href="http://www.gromacs.org">Gromacs</a> <a class="reference external" href="http://manual.gromacs.org/current/online/gro.html">GRO</a> coordinate files; see the notes on the
 <a class="reference external" href="http://chembytes.wikidot.com/g-grofile">GRO format</a> which includes a conversion routine for the box.</p>
+<div class="section" id="growriter-format-strings">
+<h2>5.7.1. GROWriter format strings<a class="headerlink" href="#growriter-format-strings" title="Permalink to this headline">¶</a></h2>
+<p>The GROWriter class has a .fmt attribute, which is a dictionary of different
+strings for writing lines in .gro files.  These are as follows:</p>
+<dl class="docutils">
+<dt>n_atoms</dt>
+<dd>For the first line of the gro file, supply the number of atoms in the system.
+Eg: fmt[&#8216;n_atoms&#8217;].format(42)</dd>
+<dt>xyz</dt>
+<dd><p class="first">An atom line without velocities.  Requires that the &#8216;resid&#8217;, &#8216;resname&#8217;,
+&#8216;name&#8217;, &#8216;index&#8217; and &#8216;pos&#8217; keys be supplied.
+Eg: fmt[&#8216;xyz&#8217;].format(resid=1, resname=&#8217;SOL&#8217;, name=&#8217;OW2&#8217;, index=2,</p>
+<blockquote class="last">
+<div>pos=(0.0, 1.0, 2.0))</div></blockquote>
+</dd>
+<dt>xyz_v</dt>
+<dd>As above, but with velocities.  Needs an additional keyword &#8216;vel&#8217;.</dd>
+<dt>box_orthorhombic</dt>
+<dd>The final line of the gro file which gives box dimensions.  Requires
+the box keyword to be given, which should be the three cartesian dimensions.
+Eg: fmt[&#8216;box_orthorhombic&#8217;].format(box=(10.0, 10.0, 10.0))</dd>
+<dt>box_triclinic</dt>
+<dd>As above, but for a non orthorhombic box. Requires the box keyword, but this
+time as a length 9 vector.  This is a flattened version of the (3,3) triclinic
+vector representation of the unit cell.  The rearrangement into the odd
+gromacs order is done automatically.</dd>
+</dl>
 <dl class="class">
 <dt id="MDAnalysis.coordinates.GRO.GROReader">
 <em class="property">class </em><code class="descclassname">MDAnalysis.coordinates.GRO.</code><code class="descname">GROReader</code><span class="sig-paren">(</span><em>filename</em>, <em>convert_units=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/MDAnalysis/coordinates/GRO.html#GROReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.GRO.GROReader" title="Permalink to this definition">¶</a></dt>
@@ -133,6 +168,13 @@ velocities are not written (yet).</p>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version 0.11.0: </span>Frames now 0-based instead of 1-based</p>
 </div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.13.0: </span>Now strictly writes positions with 3dp precision
+and velocities with 4dp
+Removed the <cite>convert_dimensions_to_unitcell</cite> method,
+use <cite>Timestep.triclinic_dimensions</cite> instead
+Now now writes velocities where possible</p>
+</div>
 <p>Set up a GROWriter with a precision of 3 decimal places.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -142,15 +184,9 @@ velocities are not written (yet).</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="MDAnalysis.coordinates.GRO.GROWriter.convert_dimensions_to_unitcell">
-<code class="descname">convert_dimensions_to_unitcell</code><span class="sig-paren">(</span><em>ts</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/MDAnalysis/coordinates/GRO.html#GROWriter.convert_dimensions_to_unitcell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.GRO.GROWriter.convert_dimensions_to_unitcell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read dimensions from timestep <em>ts</em> and return appropriate unitcell</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="MDAnalysis.coordinates.GRO.GROWriter.fmt">
-<code class="descname">fmt</code><em class="property"> = {'box_orthorhombic': '%10.5f%10.5f%10.5f\n', 'box_triclinic': '%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f%10.5f\n', 'n_atoms': '%5d\n', 'xyz': '%5s%-5s%5s%5s%8.3f%8.3f%8.3f\n', 'xyz_v': '%5s%-5s%5s%5s%8.3f%8.3f%8.3f%8.4f%8.4f%8.4f\n'}</em><a class="headerlink" href="#MDAnalysis.coordinates.GRO.GROWriter.fmt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fmt</code><em class="property"> = {'box_orthorhombic': '{box[0]:10.5f}{box[1]:10.5f}{box[2]:10.5f}\n', 'box_triclinic': '{box[0]:10.5f}{box[4]:10.5f}{box[8]:10.5f}{box[1]:10.5f}{box[2]:10.5f}{box[3]:10.5f}{box[5]:10.5f}{box[6]:10.5f}{box[7]:10.5f}\n', 'n_atoms': '{0:5d}\n', 'xyz': '{resid:&gt;5d}{resname:&lt;5.5s}{name:&gt;5.5s}{index:&gt;5d}{pos[0]:8.3f}{pos[1]:8.3f}{pos[2]:8.3f}\n', 'xyz_v': '{resid:&gt;5d}{resname:&lt;5.5s}{name:&gt;5.5s}{index:&gt;5d}{pos[0]:8.3f}{pos[1]:8.3f}{pos[2]:8.3f}{vel[0]:8.4f}{vel[1]:8.4f}{vel[2]:8.4f}\n'}</em><a class="headerlink" href="#MDAnalysis.coordinates.GRO.GROWriter.fmt" title="Permalink to this definition">¶</a></dt>
 <dd><p>format strings for the GRO file (all include newline); precision
 of 3 decimal places is hard-coded here.</p>
 </dd></dl>
@@ -186,6 +222,7 @@ routine will chop off the leading digits.</p>
 
 </dd></dl>
 
+</div>
 </div>
 
 
