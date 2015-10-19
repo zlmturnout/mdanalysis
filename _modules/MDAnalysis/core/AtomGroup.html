@@ -492,6 +492,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">weakref</span>
+<span class="kn">import</span> <span class="nn">gc</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 
 <span class="c"># Local imports</span>
@@ -1175,8 +1176,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__init__</span><span class="p">([])</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">universe_n_atoms</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Trying to unpickle an inconsistent AtomGroup&quot;</span><span class="p">)</span>
-        <span class="n">lookup_set</span> <span class="o">=</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">_anchor_universes</span> <span class="k">if</span> <span class="n">anchor_name</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">_named_anchor_universes</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Trying to unpickle an inconsistent AtomGroup: &quot;</span>
+                      <span class="s">&quot;it has higher indices than the universe it refers to.&quot;</span><span class="p">)</span>
+        <span class="n">lookup_set</span> <span class="o">=</span> <span class="p">(</span><span class="n">MDAnalysis</span><span class="o">.</span><span class="n">_anchor_universes</span> <span class="k">if</span> <span class="n">anchor_name</span> <span class="ow">is</span> <span class="bp">None</span>
+                      <span class="k">else</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">_named_anchor_universes</span><span class="p">)</span>
+        <span class="c"># Universes that go out-of-scope but haven&#39;t been garbage-collected</span>
+        <span class="c">#  yet may be (wrongly) brought back to life by unpickling onto them.</span>
+        <span class="c"># gc.collect() makes sure all is clean (Issue 487).</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">test_universe</span> <span class="ow">in</span> <span class="n">lookup_set</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">test_universe</span><span class="o">.</span><span class="n">_matches_unpickling</span><span class="p">(</span><span class="o">*</span><span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">test_universe</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">_atoms</span><span class="p">)</span>
