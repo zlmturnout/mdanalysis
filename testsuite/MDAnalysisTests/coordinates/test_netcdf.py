@@ -170,7 +170,7 @@ class _NCDFWriterTest(TestCase):
                 raise AssertionError("NCDFWriter did not write "
                                      "dimension '{}'".format(k))
             else:
-                assert_equal(len(dim), len(dim_new),
+                assert_equal(dim, dim_new,
                              err_msg="Dimension '{}' size mismatch".format(k))
                 
 

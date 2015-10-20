@@ -35,6 +35,8 @@ Enhancement
 
 Changes
   * built html doc files are no longer version controlled (Issue #491)
+  * use scipy.io.netcdf pure python implementation for reading of Amber
+    netcdf3 trajctories instead of netCDF4 + netcdf lib (see also Issue #488)
 
 Fixes
   * Fixed setup-time dependency on numpy that broke pip installs. (Issue #479)
