@@ -128,11 +128,13 @@
 
 <span class="sd">.. Rubric:: References</span>
 
-<span class="sd">.. [Seyler2015] Sean L. Seyler, Avishek Kumar, Michael F. Thorpe, Oliver Beckstein.</span>
-<span class="sd">   *Path Similarity Analysis: a Method for Quantifying Macromolecular</span>
-<span class="sd">   Pathways.* `arXiv:1505.04807`_ (2015).</span>
 
-<span class="sd">.. _`arXiv:1505.04807`: http://arxiv.org/abs/1505.04807</span>
+<span class="sd">.. [Seyler2015] Seyler SL, Kumar A, Thorpe MF, Beckstein O (2015)</span>
+<span class="sd">                Path Similarity Analysis: A Method for Quantifying</span>
+<span class="sd">                Macromolecular Pathways. PLoS Comput Biol 11(10): e1004568.</span>
+<span class="sd">                doi: `10.1371/journal.pcbi.1004568`_</span>
+
+<span class="sd">.. _`10.1371/journal.pcbi.1004568`: http://dx.doi.org/10.1371/journal.pcbi.1004568</span>
 <span class="sd">.. _`PSAnalysisTutorial`: https://github.com/Becksteinlab/PSAnalysisTutorial</span>
 
 
@@ -1372,7 +1374,8 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">numpaths</span><span class="p">):</span>
                 <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
                 <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
-                <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+                <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+                <span class="n">D</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>
         <span class="k">if</span> <span class="n">store</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;filename&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
