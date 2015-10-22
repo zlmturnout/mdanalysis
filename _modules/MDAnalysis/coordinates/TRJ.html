@@ -638,7 +638,7 @@
     <span class="sd">&quot;&quot;&quot;Writer for `AMBER NETCDF format`_ (version 1.0).</span>
 
 <span class="sd">    AMBER binary trajectories are automatically recognised by the</span>
-<span class="sd">    file extension &quot;.ncdf&quot;.</span>
+<span class="sd">    file extension &quot;.ncdf&quot; or &quot;.nc&quot;.</span>
 
 <span class="sd">    Velocities are written out if they are detected in the input</span>
 <span class="sd">    :class:`Timestep`. The trajectories are always written with ångström</span>
@@ -682,9 +682,9 @@
 <span class="sd">          *dt*</span>
 <span class="sd">            timestep</span>
 <span class="sd">          *convert_units*</span>
-<span class="sd">            ``True``: units are converted to the AMBER base format; ``None`` selects</span>
-<span class="sd">            the value of :data:`MDAnalysis.core.flags` [&#39;convert_lengths&#39;].</span>
-<span class="sd">            (see :ref:`flags-label`)</span>
+<span class="sd">            ``True``: units are converted to the AMBER base format; ``None``</span>
+<span class="sd">            selects the value of :data:`MDAnalysis.core.flags`</span>
+<span class="sd">            [&#39;convert_lengths&#39;] (see :ref:`flags-label`).</span>
 <span class="sd">          *zlib*</span>
 <span class="sd">            compress data [``False``]</span>
 <span class="sd">          *cmplevel*</span>
@@ -722,7 +722,7 @@
         <span class="sd">&quot;&quot;&quot;Initialize netcdf AMBER 1.0 trajectory.</span>
 
 <span class="sd">        The trajectory is opened when the first frame is written</span>
-<span class="sd">        because that is the earlies time that we can detect if the</span>
+<span class="sd">        because that this is the earliest time that we can detect if the</span>
 <span class="sd">        output should contain periodicity information (i.e. the unit</span>
 <span class="sd">        cell dimensions).</span>
 
@@ -762,11 +762,16 @@
         <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;spatial&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c"># number of spatial dimensions</span>
         <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;cell_spatial&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c"># unitcell lengths</span>
         <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;cell_angular&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c"># unitcell angles</span>
+        <span class="n">ncfile</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;label&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c"># needed for cell_angular</span>
 
         <span class="c"># Create variables.</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;coordinates&#39;</span><span class="p">,</span> <span class="s">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;frame&#39;</span><span class="p">,</span> <span class="s">&#39;atom&#39;</span><span class="p">,</span> <span class="s">&#39;spatial&#39;</span><span class="p">),</span>
                                        <span class="n">zlib</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">zlib</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmplevel</span><span class="p">)</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">,</span> <span class="s">&#39;angstrom&#39;</span><span class="p">)</span>
+
+        <span class="n">spatial</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;spatial&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;spatial&#39;</span><span class="p">,))</span>
+        <span class="n">spatial</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s">&#39;xyz&#39;</span><span class="p">))</span>
+        
         <span class="n">time</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span> <span class="s">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;frame&#39;</span><span class="p">,),</span>
                                      <span class="n">zlib</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">zlib</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmplevel</span><span class="p">)</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">,</span> <span class="s">&#39;picosecond&#39;</span><span class="p">)</span>
@@ -776,9 +781,20 @@
             <span class="n">cell_lengths</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;cell_lengths&#39;</span><span class="p">,</span> <span class="s">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;frame&#39;</span><span class="p">,</span> <span class="s">&#39;cell_spatial&#39;</span><span class="p">),</span>
                                                  <span class="n">zlib</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">zlib</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmplevel</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">cell_lengths</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">,</span> <span class="s">&#39;angstrom&#39;</span><span class="p">)</span>
+
+            <span class="n">cell_spatial</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;cell_spatial&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span>
+                                                 <span class="p">(</span><span class="s">&#39;cell_spatial&#39;</span><span class="p">,))</span>
+            <span class="n">cell_spatial</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s">&#39;abc&#39;</span><span class="p">))</span>
+            
             <span class="n">cell_angles</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;cell_angles&#39;</span><span class="p">,</span> <span class="s">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;frame&#39;</span><span class="p">,</span> <span class="s">&#39;cell_angular&#39;</span><span class="p">),</span>
                                                 <span class="n">zlib</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">zlib</span><span class="p">,</span> <span class="n">complevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmplevel</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">cell_angles</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">,</span> <span class="s">&#39;degrees&#39;</span><span class="p">)</span>
+
+            <span class="n">cell_angular</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;cell_angular&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span>
+                                                 <span class="p">(</span><span class="s">&#39;cell_angular&#39;</span><span class="p">,</span> <span class="s">&#39;label&#39;</span><span class="p">))</span>
+            <span class="n">cell_angular</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="s">&#39;alpha&#39;</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="s">&#39;beta &#39;</span><span class="p">),</span>
+                                          <span class="nb">list</span><span class="p">(</span><span class="s">&#39;gamma&#39;</span><span class="p">)])</span>
+            
         <span class="c"># These properties are optional, and are specified on Writer creation</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">:</span>
             <span class="n">velocs</span> <span class="o">=</span> <span class="n">ncfile</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;velocities&#39;</span><span class="p">,</span> <span class="s">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;frame&#39;</span><span class="p">,</span> <span class="s">&#39;atom&#39;</span><span class="p">,</span> <span class="s">&#39;spatial&#39;</span><span class="p">),</span>

@@ -343,7 +343,7 @@ kwarg &#8216;delta&#8217; renamed to &#8216;dt&#8217;, for uniformity with other
 <em class="property">class </em><code class="descclassname">MDAnalysis.coordinates.TRJ.</code><code class="descname">NCDFWriter</code><span class="sig-paren">(</span><em>filename</em>, <em>n_atoms</em>, <em>start=0</em>, <em>step=1</em>, <em>dt=1.0</em>, <em>remarks=None</em>, <em>convert_units=None</em>, <em>zlib=False</em>, <em>cmplevel=1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/MDAnalysis/coordinates/TRJ.html#NCDFWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.TRJ.NCDFWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writer for <a class="reference external" href="http://ambermd.org/netcdf/nctraj.html">AMBER NETCDF format</a> (version 1.0).</p>
 <p>AMBER binary trajectories are automatically recognised by the
-file extension &#8221;.ncdf&#8221;.</p>
+file extension &#8221;.ncdf&#8221; or &#8221;.nc&#8221;.</p>
 <p>Velocities are written out if they are detected in the input
 <a class="reference internal" href="#MDAnalysis.coordinates.TRJ.Timestep" title="MDAnalysis.coordinates.TRJ.Timestep"><code class="xref py py-class docutils literal"><span class="pre">Timestep</span></code></a>. The trajectories are always written with ångström
 for the lengths and picoseconds for the time (and hence Å/ps for
@@ -381,9 +381,9 @@ velocities).</p>
 <dd><p class="first last">timestep</p>
 </dd>
 <dt><em>convert_units</em></dt>
-<dd><p class="first last"><code class="docutils literal"><span class="pre">True</span></code>: units are converted to the AMBER base format; <code class="docutils literal"><span class="pre">None</span></code> selects
-the value of <code class="xref py py-data docutils literal"><span class="pre">MDAnalysis.core.flags</span></code> [&#8216;convert_lengths&#8217;].
-(see <a class="reference internal" href="../core/init.html#flags-label"><span>Flags</span></a>)</p>
+<dd><p class="first last"><code class="docutils literal"><span class="pre">True</span></code>: units are converted to the AMBER base format; <code class="docutils literal"><span class="pre">None</span></code>
+selects the value of <code class="xref py py-data docutils literal"><span class="pre">MDAnalysis.core.flags</span></code>
+[&#8216;convert_lengths&#8217;] (see <a class="reference internal" href="../core/init.html#flags-label"><span>Flags</span></a>).</p>
 </dd>
 <dt><em>zlib</em></dt>
 <dd><p class="first last">compress data [<code class="docutils literal"><span class="pre">False</span></code>]</p>
