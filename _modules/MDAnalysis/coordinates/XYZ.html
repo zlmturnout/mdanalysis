@@ -229,7 +229,12 @@
             <span class="k">pass</span>
         <span class="c"># list or string (can be a single atom name... deal with this in</span>
         <span class="c"># write_next_timestep() once we know n_atoms)</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">asiterable</span><span class="p">(</span><span class="n">atoms</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">asiterable</span><span class="p">(</span><span class="n">atoms</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">atoms</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">atoms</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">)])</span>
 
 <div class="viewcode-block" id="XYZWriter.close"><a class="viewcode-back" href="../../../documentation_pages/coordinates/XYZ.html#MDAnalysis.coordinates.XYZ.XYZWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close the trajectory file and finalize the writing&quot;&quot;&quot;</span>
@@ -288,6 +293,7 @@
                                   <span class="s">&#39;trajectory file&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span>
+
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">!=</span> <span class="n">ts</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">:</span>
@@ -453,21 +459,31 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyzfile</span>
 
-<div class="viewcode-block" id="XYZReader.Writer"><a class="viewcode-back" href="../../../documentation_pages/coordinates/XYZ.html#MDAnalysis.coordinates.XYZ.XYZReader.Writer">[docs]</a>    <span class="k">def</span> <span class="nf">Writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a XYZWriter for *filename* with the same parameters as this XYZ.</span>
+<div class="viewcode-block" id="XYZReader.Writer"><a class="viewcode-back" href="../../../documentation_pages/coordinates/XYZ.html#MDAnalysis.coordinates.XYZ.XYZReader.Writer">[docs]</a>    <span class="k">def</span> <span class="nf">Writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">n_atoms</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a XYZWriter for *filename* with the same parameters as this</span>
+<span class="sd">        XYZ.</span>
 
-<span class="sd">        All values can be changed through keyword arguments.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename: str</span>
+<span class="sd">            filename of the output trajectory</span>
+<span class="sd">        n_atoms: int (optional)</span>
+<span class="sd">            number of atoms. If none is given use the same number of atoms from</span>
+<span class="sd">            the reader instance is used</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            See :class:`XYZWriter` for additional kwargs</span>
 
-<span class="sd">        :Arguments:</span>
-<span class="sd">          *filename*</span>
-<span class="sd">              filename of the output DCD trajectory</span>
-<span class="sd">        :Keywords:</span>
-<span class="sd">          *atoms*</span>
-<span class="sd">              names of the atoms (if not taken from atom groups)</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`XYZWriter` (see there for more details)</span>
 
-<span class="sd">        :Returns: :class:`XYZWriter` (see there for more details)</span>
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class: `XYZWriter`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">XYZWriter</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_atoms</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span>
+        <span class="k">return</span> <span class="n">XYZWriter</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">n_atoms</span><span class="o">=</span><span class="n">n_atoms</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="XYZReader.close"><a class="viewcode-back" href="../../../documentation_pages/coordinates/XYZ.html#MDAnalysis.coordinates.XYZ.XYZReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close xyz trajectory file if it was open.&quot;&quot;&quot;</span>
