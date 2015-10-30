@@ -282,8 +282,11 @@
 
 <span class="sd">        .. versionadded:: 0.11.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ts</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">,</span> <span class="n">velocities</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">,</span>
-                 <span class="n">forces</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">has_forces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">,</span>
+                 <span class="n">positions</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">has_positions</span><span class="p">,</span>
+                 <span class="n">velocities</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">,</span>
+                 <span class="n">forces</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">has_forces</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">ts</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">frame</span>
         <span class="n">ts</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">dimensions</span>
         <span class="k">try</span><span class="p">:</span>
@@ -299,6 +302,8 @@
         <span class="k">except</span> <span class="n">NoDataError</span><span class="p">:</span>
             <span class="k">pass</span>
 
+        <span class="c"># Optional attributes that don&#39;t live in .data</span>
+        <span class="c"># should probably iron out these last kinks</span>
         <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;_frame&#39;</span><span class="p">,):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">att</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">att</span><span class="p">))</span>
@@ -313,16 +318,37 @@
         <span class="k">return</span> <span class="n">ts</span>
 </div>
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Timestep.from_coordinates"><a class="viewcode-back" href="../../../documentation_pages/coordinates/xdrfile/XTC.html#MDAnalysis.coordinates.DCD.Timestep.from_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">from_coordinates</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">velocities</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">forces</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Timestep.from_coordinates"><a class="viewcode-back" href="../../../documentation_pages/coordinates/xdrfile/XTC.html#MDAnalysis.coordinates.DCD.Timestep.from_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">from_coordinates</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span>
+                         <span class="n">positions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">velocities</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">forces</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create an instance of this Timestep, from coordinate data</span>
+
+<span class="sd">        Can pass position, velocity and force data to form a Timestep.</span>
 
 <span class="sd">        .. versionadded:: 0.11.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">has_positions</span> <span class="o">=</span> <span class="n">positions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
         <span class="n">has_velocities</span> <span class="o">=</span> <span class="n">velocities</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
         <span class="n">has_forces</span> <span class="o">=</span> <span class="n">forces</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 
-        <span class="n">ts</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">),</span> <span class="n">velocities</span><span class="o">=</span><span class="n">has_velocities</span><span class="p">,</span> <span class="n">forces</span><span class="o">=</span><span class="n">has_forces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">ts</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
+        <span class="n">lens</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="n">positions</span><span class="p">,</span> <span class="n">velocities</span><span class="p">,</span> <span class="n">forces</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lens</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Must specify at least one set of data&quot;</span><span class="p">)</span>
+        <span class="n">n_atoms</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span>
+        <span class="c"># Check arrays are matched length?</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">val</span> <span class="o">==</span> <span class="n">n_atoms</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">lens</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Lengths of input data mismatched&quot;</span><span class="p">)</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">,</span>
+                 <span class="n">positions</span><span class="o">=</span><span class="n">has_positions</span><span class="p">,</span>
+                 <span class="n">velocities</span><span class="o">=</span><span class="n">has_velocities</span><span class="p">,</span>
+                 <span class="n">forces</span><span class="o">=</span><span class="n">has_forces</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">has_positions</span><span class="p">:</span>
+            <span class="n">ts</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
         <span class="k">if</span> <span class="n">has_velocities</span><span class="p">:</span>
             <span class="n">ts</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="n">velocities</span>
         <span class="k">if</span> <span class="n">has_forces</span><span class="p">:</span>
@@ -349,14 +375,18 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="c"># Check contents of np arrays last (probably slow)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_positions</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">has_positions</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_positions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_velocities</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocities</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">velocities</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
                 <span class="k">return</span> <span class="bp">False</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_forces</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">has_forces</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_forces</span><span class="p">:</span>
@@ -419,11 +449,15 @@
 <span class="sd">        ``ts.copy_slice(slice(start, stop, skip))``</span>
 <span class="sd">        ``ts.copy_slice([list of indices])``</span>
 
-<span class="sd">        :Returns: A Timestep object of the same type containing all header</span>
-<span class="sd">                  information and all atom information relevant to the selection.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A Timestep object of the same type containing all header</span>
+<span class="sd">        information and all atom information relevant to the selection.</span>
 
-<span class="sd">        .. Note:: The selection must be a 0 based slice or array of the atom indices</span>
-<span class="sd">                  in this Timestep</span>
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        The selection must be a 0 based slice or array of the atom indices</span>
+<span class="sd">        in this Timestep</span>
 
 <span class="sd">        .. versionadded:: 0.8</span>
 <span class="sd">        .. versionchanged:: 0.11.0</span>
@@ -432,20 +466,33 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Detect the size of the Timestep by doing a dummy slice</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">new_n_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pos</span><span class="p">[</span><span class="n">sel</span><span class="p">])</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">NoDataError</span><span class="p">:</span>
+            <span class="c"># It&#39;s cool if there&#39;s no Data, we&#39;ll live</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Selection type must be compatible with slicing&quot;</span>
                             <span class="s">&quot; the coordinates&quot;</span><span class="p">)</span>
-        <span class="c"># Make a mostly empty TS of same type of reduced size</span>
-        <span class="n">new_TS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="n">new_n_atoms</span><span class="p">,</span> <span class="n">velocities</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">,</span>
-                                <span class="n">forces</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">has_forces</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">NoDataError</span><span class="p">:</span>
+            <span class="n">vel</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Selection type must be compatible with slicing&quot;</span>
+                            <span class="s">&quot; the coordinates&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">force</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forces</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">NoDataError</span><span class="p">:</span>
+            <span class="n">force</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Selection type must be compatible with slicing&quot;</span>
+                            <span class="s">&quot; the coordinates&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_positions</span><span class="p">:</span>
-            <span class="n">new_TS</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_velocities</span><span class="p">:</span>
-            <span class="n">new_TS</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocities</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_forces</span><span class="p">:</span>
-            <span class="n">new_TS</span><span class="o">.</span><span class="n">forces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forces</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+        <span class="n">new_TS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">from_coordinates</span><span class="p">(</span>
+            <span class="n">positions</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+            <span class="n">velocities</span><span class="o">=</span><span class="n">vel</span><span class="p">,</span>
+            <span class="n">forces</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
+
         <span class="n">new_TS</span><span class="o">.</span><span class="n">_unitcell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unitcell</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="n">new_TS</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>

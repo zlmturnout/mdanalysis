@@ -192,22 +192,25 @@ Native frame number now stored as <cite>_frame</cite>, was <cite>step</cite></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Timestep object of the same type containing all header
-information and all atom information relevant to the selection.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><em>A Timestep object of the same type containing all header</em></li>
+<li><em>information and all atom information relevant to the selection.</em></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The selection must be a 0 based slice or array of the atom indices
+<p>The selection must be a 0 based slice or array of the atom indices
 in this Timestep</p>
-</div>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.8.</span></p>
 </div>
-<div class="versionchanged">
+<div class="last versionchanged">
 <p><span class="versionmodified">Changed in version 0.11.0: </span>Reworked to follow new Timestep API.  Now will strictly only
 copy official attributes of the Timestep.</p>
+</div>
 </div>
 </dd></dl>
 
@@ -262,8 +265,9 @@ When the Timestep does not contain force information</td>
 
 <dl class="method">
 <dt id="MDAnalysis.coordinates.xdrfile.XTC.Timestep.from_coordinates">
-<code class="descname">from_coordinates</code><span class="sig-paren">(</span><em>positions</em>, <em>velocities=None</em>, <em>forces=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/MDAnalysis/coordinates/base.html#Timestep.from_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.xdrfile.XTC.Timestep.from_coordinates" title="Permalink to this definition">¶</a></dt>
+<code class="descname">from_coordinates</code><span class="sig-paren">(</span><em>positions=None</em>, <em>velocities=None</em>, <em>forces=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/MDAnalysis/coordinates/base.html#Timestep.from_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.coordinates.xdrfile.XTC.Timestep.from_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an instance of this Timestep, from coordinate data</p>
+<p>Can pass position, velocity and force data to form a Timestep.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.11.0.</span></p>
 </div>
