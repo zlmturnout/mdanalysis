@@ -4457,38 +4457,40 @@
 <span class="sd">        **Simple selections**</span>
 
 <span class="sd">            protein, backbone, nucleic, nucleicbackbone</span>
-<span class="sd">                selects all atoms that belong to a standard set of residues; a protein</span>
-<span class="sd">                is identfied by a hard-coded set of residue names so it  may not</span>
-<span class="sd">                work for esoteric residues.</span>
+<span class="sd">                selects all atoms that belong to a standard set of residues;</span>
+<span class="sd">                a protein is identfied by a hard-coded set of residue names so</span>
+<span class="sd">                it  may not work for esoteric residues.</span>
 <span class="sd">            segid *seg-name*</span>
-<span class="sd">                select by segid (as given in the topology), e.g. ``segid 4AKE`` or ``segid DMPC``</span>
+<span class="sd">                select by segid (as given in the topology), e.g. ``segid 4AKE``</span>
+<span class="sd">                or ``segid DMPC``</span>
 <span class="sd">            resid *residue-number-range*</span>
-<span class="sd">                resid can take a single residue number or a range of numbers. A range</span>
-<span class="sd">                consists of two numbers separated by a colon (inclusive) such</span>
-<span class="sd">                as ``resid 1:5``. A residue number (&quot;resid&quot;) is taken directly from the</span>
-<span class="sd">                topology.</span>
+<span class="sd">                resid can take a single residue number or a range of numbers. A</span>
+<span class="sd">                range consists of two numbers separated by a colon (inclusive)</span>
+<span class="sd">                such as ``resid 1:5``. A residue number (&quot;resid&quot;) is taken</span>
+<span class="sd">                directly from the topology.</span>
 <span class="sd">            resnum *resnum-number-range*</span>
-<span class="sd">                resnum is the canonical residue number; typically it is set to the residue id</span>
-<span class="sd">                in the original PDB structure.</span>
+<span class="sd">                resnum is the canonical residue number; typically it is set to</span>
+<span class="sd">                the residue id in the original PDB structure.</span>
 <span class="sd">            resname *residue-name*</span>
 <span class="sd">                select by residue name, e.g. ``resname LYS``</span>
 <span class="sd">            name *atom-name*</span>
-<span class="sd">                select by atom name (as given in the topology). Often, this is force</span>
-<span class="sd">                field dependent. Example: ``name CA`` (for C&amp;alpha; atoms) or ``name OW`` (for SPC water oxygen)</span>
+<span class="sd">                select by atom name (as given in the topology). Often, this is</span>
+<span class="sd">                force field dependent. Example: ``name CA`` (for C&amp;alpha; atoms)</span>
+<span class="sd">                or ``name OW`` (for SPC water oxygen)</span>
 <span class="sd">            type *atom-type*</span>
-<span class="sd">                select by atom type; this is either a string or a number and depends on</span>
-<span class="sd">                the force field; it is read from the topology file (e.g. the CHARMM PSF</span>
-<span class="sd">                file contains numeric atom types). It has non-sensical values when a</span>
-<span class="sd">                PDB or GRO file is used as a topology.</span>
+<span class="sd">                select by atom type; this is either a string or a number and</span>
+<span class="sd">                depends on the force field; it is read from the topology file</span>
+<span class="sd">                (e.g. the CHARMM PSF file contains numeric atom types). It has</span>
+<span class="sd">                non-sensical values when a PDB or GRO file is used as a topology</span>
 <span class="sd">            atom *seg-name*  *residue-number*  *atom-name*</span>
 <span class="sd">                a selector for a single atom consisting of segid resid atomname,</span>
-<span class="sd">                e.g. ``DMPC 1 C2`` selects the C2 carbon of the first residue of the DMPC</span>
-<span class="sd">                segment</span>
+<span class="sd">                e.g. ``DMPC 1 C2`` selects the C2 carbon of the first residue of</span>
+<span class="sd">                the DMPC segment</span>
 <span class="sd">            altloc *alternative-location*</span>
 <span class="sd">                a selection for atoms where alternative locations are available,</span>
 <span class="sd">                which is often the case with high-resolution crystal structures</span>
-<span class="sd">                e.g. `resid 4 and resname ALA and altloc B` selects only the atoms</span>
-<span class="sd">                of ALA-4 that have an altloc B record.</span>
+<span class="sd">                e.g. `resid 4 and resname ALA and altloc B` selects only the</span>
+<span class="sd">                atoms of ALA-4 that have an altloc B record.</span>
 
 <span class="sd">        **Boolean**</span>
 
@@ -4497,65 +4499,81 @@
 <span class="sd">                all atoms that aren&#39;t part of a protein</span>
 
 <span class="sd">            and, or</span>
-<span class="sd">                combine two selections according to the rules of boolean algebra,</span>
-<span class="sd">                e.g. ``protein and not (resname ALA or resname LYS)`` selects all atoms</span>
-<span class="sd">                that belong to a protein, but are not in a lysine or alanine residue</span>
+<span class="sd">                combine two selections according to the rules of boolean</span>
+<span class="sd">                algebra, e.g. ``protein and not (resname ALA or resname LYS)``</span>
+<span class="sd">                selects all atoms that belong to a protein, but are not in a</span>
+<span class="sd">                lysine or alanine residue</span>
 
 <span class="sd">        **Geometric**</span>
 
 <span class="sd">            around *distance*  *selection*</span>
 <span class="sd">                selects all atoms a certain cutoff away from another selection,</span>
-<span class="sd">                e.g. ``around 3.5 protein`` selects all atoms not belonging to protein</span>
-<span class="sd">                that are within 3.5 Angstroms from the protein</span>
+<span class="sd">                e.g. ``around 3.5 protein`` selects all atoms not belonging to</span>
+<span class="sd">                protein that are within 3.5 Angstroms from the protein</span>
 <span class="sd">            point *x* *y* *z*  *distance*</span>
 <span class="sd">                selects all atoms within a cutoff of a point in space, make sure</span>
-<span class="sd">                coordinate is separated by spaces, e.g. ``point 5.0 5.0 5.0  3.5`` selects</span>
-<span class="sd">                all atoms within 3.5 Angstroms of the coordinate (5.0, 5.0, 5.0)</span>
+<span class="sd">                coordinate is separated by spaces,</span>
+<span class="sd">                e.g. ``point 5.0 5.0 5.0  3.5`` selects all atoms within 3.5</span>
+<span class="sd">                Angstroms of the coordinate (5.0, 5.0, 5.0)</span>
 <span class="sd">            prop [abs] *property*  *operator*  *value*</span>
-<span class="sd">                selects atoms based on position, using *property*  **x**, **y**, or</span>
-<span class="sd">                **z** coordinate. Supports the **abs** keyword (for absolute value) and</span>
-<span class="sd">                the following *operators*: **&lt;, &gt;, &lt;=, &gt;=, ==, !=**. For example, ``prop z &gt;= 5.0``</span>
-<span class="sd">                selects all atoms with z coordinate greater than 5.0; ``prop abs z &lt;= 5.0``</span>
-<span class="sd">                selects all atoms within -5.0 &lt;= z &lt;= 5.0.</span>
+<span class="sd">                selects atoms based on position, using *property*  **x**, **y**,</span>
+<span class="sd">                or **z** coordinate. Supports the **abs** keyword (for absolute</span>
+<span class="sd">                value) and the following *operators*: **&lt;, &gt;, &lt;=, &gt;=, ==, !=**.</span>
+<span class="sd">                For example, ``prop z &gt;= 5.0`` selects all atoms with z</span>
+<span class="sd">                coordinate greater than 5.0; ``prop abs z &lt;= 5.0`` selects all</span>
+<span class="sd">                atoms within -5.0 &lt;= z &lt;= 5.0.</span>
+<span class="sd">            sphzone *radius* *selection*</span>
+<span class="sd">                Selects all atoms that are within *radius* of the center of</span>
+<span class="sd">                geometry of *selection*</span>
+<span class="sd">            sphlayer *inner radius* *outer radius* *selection*</span>
+<span class="sd">                Similar to sphzone, but also excludes atoms that are within</span>
+<span class="sd">                *inner radius* of the selection COG</span>
 
 <span class="sd">        **Connectivity**</span>
 
 <span class="sd">            byres *selection*</span>
 <span class="sd">                selects all atoms that are in the same segment and residue as</span>
 <span class="sd">                selection, e.g. specify the subselection after the byres keyword</span>
+<span class="sd">            bonded *selection*</span>
+<span class="sd">                selects all atoms that are bonded to selection</span>
+<span class="sd">                eg: ``select name H bonded name O`` selects only hydrogens</span>
+<span class="sd">                bonded to oxygens</span>
 
 <span class="sd">        **Index**</span>
 
 <span class="sd">            bynum *index-range*</span>
 <span class="sd">                selects all atoms within a range of (1-based) inclusive indices,</span>
-<span class="sd">                e.g. ``bynum 1`` selects the first atom in the universe; ``bynum 5:10``</span>
-<span class="sd">                selects atoms 5 through 10 inclusive. All atoms in the</span>
-<span class="sd">                :class:`MDAnalysis.Universe` are consecutively numbered, and the index</span>
-<span class="sd">                runs from 1 up to the total number of atoms.</span>
+<span class="sd">                e.g. ``bynum 1`` selects the first atom in the universe;</span>
+<span class="sd">                ``bynum 5:10`` selects atoms 5 through 10 inclusive. All atoms</span>
+<span class="sd">                in the :class:`MDAnalysis.Universe` are consecutively numbered,</span>
+<span class="sd">                and the index runs from 1 up to the total number of atoms.</span>
 
 <span class="sd">        **Preexisting selections**</span>
 
 <span class="sd">            group *group-name*</span>
-<span class="sd">                selects the atoms in the :class:`AtomGroup` passed to the function as an</span>
-<span class="sd">                argument named *group-name*. Only the atoms common to *group-name* and the</span>
-<span class="sd">                instance :meth:`~select_atoms` was called from will be considered.</span>
-<span class="sd">                *group-name* will be included in the parsing just by comparison of atom indices.</span>
-<span class="sd">                This means that it is up to the user to make sure they were defined in an</span>
-<span class="sd">                appropriate :class:`Universe`.</span>
+<span class="sd">                selects the atoms in the :class:`AtomGroup` passed to the</span>
+<span class="sd">                function as an argument named *group-name*. Only the atoms</span>
+<span class="sd">                common to *group-name* and the instance :meth:`~select_atoms`</span>
+<span class="sd">                was called from will be considered. *group-name* will be</span>
+<span class="sd">                 included in the parsing just by comparison of atom indices.</span>
+<span class="sd">                This means that it is up to the user to make sure they were</span>
+<span class="sd">                defined in an appropriate :class:`Universe`.</span>
 
 <span class="sd">            fullgroup *group-name*</span>
-<span class="sd">                just like the ``group`` keyword with the difference that all the atoms of</span>
-<span class="sd">                *group-name* are included. The resulting selection may therefore have atoms</span>
-<span class="sd">                that were initially absent from the instance :meth:`~select_atoms` was</span>
-<span class="sd">                called from.</span>
-
+<span class="sd">                just like the ``group`` keyword with the difference that all the</span>
+<span class="sd">                atoms of *group-name* are included. The resulting selection may</span>
+<span class="sd">                therefore have atoms that were initially absent from the</span>
+<span class="sd">                instance :meth:`~select_atoms` was called from.</span>
 
 <span class="sd">        .. versionchanged:: 0.7.4</span>
 <span class="sd">           Added *resnum* selection.</span>
 <span class="sd">        .. versionchanged:: 0.8.1</span>
 <span class="sd">           Added *group* and *fullgroup* selections.</span>
+<span class="sd">        .. versionchanged:: 0.13.0</span>
+<span class="sd">           Added *bonded* selection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Selection</span>  <span class="c"># can ONLY import in method, otherwise cyclical import!</span>
+        <span class="c"># can ONLY import in method, otherwise cyclical import!</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Selection</span>
 
         <span class="n">atomgrp</span> <span class="o">=</span> <span class="n">Selection</span><span class="o">.</span><span class="n">Parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sel</span><span class="p">,</span> <span class="n">selgroups</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">othersel</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>

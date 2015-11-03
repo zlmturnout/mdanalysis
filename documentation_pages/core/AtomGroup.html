@@ -700,38 +700,40 @@ instances is preserved and duplicates are not removed.</p>
 <blockquote>
 <div><dl class="docutils">
 <dt>protein, backbone, nucleic, nucleicbackbone</dt>
-<dd>selects all atoms that belong to a standard set of residues; a protein
-is identfied by a hard-coded set of residue names so it  may not
-work for esoteric residues.</dd>
+<dd>selects all atoms that belong to a standard set of residues;
+a protein is identfied by a hard-coded set of residue names so
+it  may not work for esoteric residues.</dd>
 <dt>segid <em>seg-name</em></dt>
-<dd>select by segid (as given in the topology), e.g. <code class="docutils literal"><span class="pre">segid</span> <span class="pre">4AKE</span></code> or <code class="docutils literal"><span class="pre">segid</span> <span class="pre">DMPC</span></code></dd>
+<dd>select by segid (as given in the topology), e.g. <code class="docutils literal"><span class="pre">segid</span> <span class="pre">4AKE</span></code>
+or <code class="docutils literal"><span class="pre">segid</span> <span class="pre">DMPC</span></code></dd>
 <dt>resid <em>residue-number-range</em></dt>
-<dd>resid can take a single residue number or a range of numbers. A range
-consists of two numbers separated by a colon (inclusive) such
-as <code class="docutils literal"><span class="pre">resid</span> <span class="pre">1:5</span></code>. A residue number (&#8220;resid&#8221;) is taken directly from the
-topology.</dd>
+<dd>resid can take a single residue number or a range of numbers. A
+range consists of two numbers separated by a colon (inclusive)
+such as <code class="docutils literal"><span class="pre">resid</span> <span class="pre">1:5</span></code>. A residue number (&#8220;resid&#8221;) is taken
+directly from the topology.</dd>
 <dt>resnum <em>resnum-number-range</em></dt>
-<dd>resnum is the canonical residue number; typically it is set to the residue id
-in the original PDB structure.</dd>
+<dd>resnum is the canonical residue number; typically it is set to
+the residue id in the original PDB structure.</dd>
 <dt>resname <em>residue-name</em></dt>
 <dd>select by residue name, e.g. <code class="docutils literal"><span class="pre">resname</span> <span class="pre">LYS</span></code></dd>
 <dt>name <em>atom-name</em></dt>
-<dd>select by atom name (as given in the topology). Often, this is force
-field dependent. Example: <code class="docutils literal"><span class="pre">name</span> <span class="pre">CA</span></code> (for C&amp;alpha; atoms) or <code class="docutils literal"><span class="pre">name</span> <span class="pre">OW</span></code> (for SPC water oxygen)</dd>
+<dd>select by atom name (as given in the topology). Often, this is
+force field dependent. Example: <code class="docutils literal"><span class="pre">name</span> <span class="pre">CA</span></code> (for C&amp;alpha; atoms)
+or <code class="docutils literal"><span class="pre">name</span> <span class="pre">OW</span></code> (for SPC water oxygen)</dd>
 <dt>type <em>atom-type</em></dt>
-<dd>select by atom type; this is either a string or a number and depends on
-the force field; it is read from the topology file (e.g. the CHARMM PSF
-file contains numeric atom types). It has non-sensical values when a
-PDB or GRO file is used as a topology.</dd>
+<dd>select by atom type; this is either a string or a number and
+depends on the force field; it is read from the topology file
+(e.g. the CHARMM PSF file contains numeric atom types). It has
+non-sensical values when a PDB or GRO file is used as a topology</dd>
 <dt>atom <em>seg-name</em>  <em>residue-number</em>  <em>atom-name</em></dt>
 <dd>a selector for a single atom consisting of segid resid atomname,
-e.g. <code class="docutils literal"><span class="pre">DMPC</span> <span class="pre">1</span> <span class="pre">C2</span></code> selects the C2 carbon of the first residue of the DMPC
-segment</dd>
+e.g. <code class="docutils literal"><span class="pre">DMPC</span> <span class="pre">1</span> <span class="pre">C2</span></code> selects the C2 carbon of the first residue of
+the DMPC segment</dd>
 <dt>altloc <em>alternative-location</em></dt>
 <dd>a selection for atoms where alternative locations are available,
 which is often the case with high-resolution crystal structures
-e.g. <cite>resid 4 and resname ALA and altloc B</cite> selects only the atoms
-of ALA-4 that have an altloc B record.</dd>
+e.g. <cite>resid 4 and resname ALA and altloc B</cite> selects only the
+atoms of ALA-4 that have an altloc B record.</dd>
 </dl>
 </div></blockquote>
 <p><strong>Boolean</strong></p>
@@ -741,9 +743,10 @@ of ALA-4 that have an altloc B record.</dd>
 <dd>all atoms not in the selection, e.g. <code class="docutils literal"><span class="pre">not</span> <span class="pre">protein</span></code> selects
 all atoms that aren&#8217;t part of a protein</dd>
 <dt>and, or</dt>
-<dd>combine two selections according to the rules of boolean algebra,
-e.g. <code class="docutils literal"><span class="pre">protein</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">(resname</span> <span class="pre">ALA</span> <span class="pre">or</span> <span class="pre">resname</span> <span class="pre">LYS)</span></code> selects all atoms
-that belong to a protein, but are not in a lysine or alanine residue</dd>
+<dd>combine two selections according to the rules of boolean
+algebra, e.g. <code class="docutils literal"><span class="pre">protein</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">(resname</span> <span class="pre">ALA</span> <span class="pre">or</span> <span class="pre">resname</span> <span class="pre">LYS)</span></code>
+selects all atoms that belong to a protein, but are not in a
+lysine or alanine residue</dd>
 </dl>
 </div></blockquote>
 <p><strong>Geometric</strong></p>
@@ -751,18 +754,26 @@ that belong to a protein, but are not in a lysine or alanine residue</dd>
 <div><dl class="docutils">
 <dt>around <em>distance</em>  <em>selection</em></dt>
 <dd>selects all atoms a certain cutoff away from another selection,
-e.g. <code class="docutils literal"><span class="pre">around</span> <span class="pre">3.5</span> <span class="pre">protein</span></code> selects all atoms not belonging to protein
-that are within 3.5 Angstroms from the protein</dd>
+e.g. <code class="docutils literal"><span class="pre">around</span> <span class="pre">3.5</span> <span class="pre">protein</span></code> selects all atoms not belonging to
+protein that are within 3.5 Angstroms from the protein</dd>
 <dt>point <em>x</em> <em>y</em> <em>z</em>  <em>distance</em></dt>
 <dd>selects all atoms within a cutoff of a point in space, make sure
-coordinate is separated by spaces, e.g. <code class="docutils literal"><span class="pre">point</span> <span class="pre">5.0</span> <span class="pre">5.0</span> <span class="pre">5.0</span>&nbsp; <span class="pre">3.5</span></code> selects
-all atoms within 3.5 Angstroms of the coordinate (5.0, 5.0, 5.0)</dd>
+coordinate is separated by spaces,
+e.g. <code class="docutils literal"><span class="pre">point</span> <span class="pre">5.0</span> <span class="pre">5.0</span> <span class="pre">5.0</span>&nbsp; <span class="pre">3.5</span></code> selects all atoms within 3.5
+Angstroms of the coordinate (5.0, 5.0, 5.0)</dd>
 <dt>prop [abs] <em>property</em>  <em>operator</em>  <em>value</em></dt>
-<dd>selects atoms based on position, using <em>property</em>  <strong>x</strong>, <strong>y</strong>, or
-<strong>z</strong> coordinate. Supports the <strong>abs</strong> keyword (for absolute value) and
-the following <em>operators</em>: <strong>&lt;, &gt;, &lt;=, &gt;=, ==, !=</strong>. For example, <code class="docutils literal"><span class="pre">prop</span> <span class="pre">z</span> <span class="pre">&gt;=</span> <span class="pre">5.0</span></code>
-selects all atoms with z coordinate greater than 5.0; <code class="docutils literal"><span class="pre">prop</span> <span class="pre">abs</span> <span class="pre">z</span> <span class="pre">&lt;=</span> <span class="pre">5.0</span></code>
-selects all atoms within -5.0 &lt;= z &lt;= 5.0.</dd>
+<dd>selects atoms based on position, using <em>property</em>  <strong>x</strong>, <strong>y</strong>,
+or <strong>z</strong> coordinate. Supports the <strong>abs</strong> keyword (for absolute
+value) and the following <em>operators</em>: <strong>&lt;, &gt;, &lt;=, &gt;=, ==, !=</strong>.
+For example, <code class="docutils literal"><span class="pre">prop</span> <span class="pre">z</span> <span class="pre">&gt;=</span> <span class="pre">5.0</span></code> selects all atoms with z
+coordinate greater than 5.0; <code class="docutils literal"><span class="pre">prop</span> <span class="pre">abs</span> <span class="pre">z</span> <span class="pre">&lt;=</span> <span class="pre">5.0</span></code> selects all
+atoms within -5.0 &lt;= z &lt;= 5.0.</dd>
+<dt>sphzone <em>radius</em> <em>selection</em></dt>
+<dd>Selects all atoms that are within <em>radius</em> of the center of
+geometry of <em>selection</em></dd>
+<dt>sphlayer <em>inner radius</em> <em>outer radius</em> <em>selection</em></dt>
+<dd>Similar to sphzone, but also excludes atoms that are within
+<em>inner radius</em> of the selection COG</dd>
 </dl>
 </div></blockquote>
 <p><strong>Connectivity</strong></p>
@@ -771,6 +782,10 @@ selects all atoms within -5.0 &lt;= z &lt;= 5.0.</dd>
 <dt>byres <em>selection</em></dt>
 <dd>selects all atoms that are in the same segment and residue as
 selection, e.g. specify the subselection after the byres keyword</dd>
+<dt>bonded <em>selection</em></dt>
+<dd>selects all atoms that are bonded to selection
+eg: <code class="docutils literal"><span class="pre">select</span> <span class="pre">name</span> <span class="pre">H</span> <span class="pre">bonded</span> <span class="pre">name</span> <span class="pre">O</span></code> selects only hydrogens
+bonded to oxygens</dd>
 </dl>
 </div></blockquote>
 <p><strong>Index</strong></p>
@@ -778,27 +793,30 @@ selection, e.g. specify the subselection after the byres keyword</dd>
 <div><dl class="docutils">
 <dt>bynum <em>index-range</em></dt>
 <dd>selects all atoms within a range of (1-based) inclusive indices,
-e.g. <code class="docutils literal"><span class="pre">bynum</span> <span class="pre">1</span></code> selects the first atom in the universe; <code class="docutils literal"><span class="pre">bynum</span> <span class="pre">5:10</span></code>
-selects atoms 5 through 10 inclusive. All atoms in the
-<code class="xref py py-class docutils literal"><span class="pre">MDAnalysis.Universe</span></code> are consecutively numbered, and the index
-runs from 1 up to the total number of atoms.</dd>
+e.g. <code class="docutils literal"><span class="pre">bynum</span> <span class="pre">1</span></code> selects the first atom in the universe;
+<code class="docutils literal"><span class="pre">bynum</span> <span class="pre">5:10</span></code> selects atoms 5 through 10 inclusive. All atoms
+in the <code class="xref py py-class docutils literal"><span class="pre">MDAnalysis.Universe</span></code> are consecutively numbered,
+and the index runs from 1 up to the total number of atoms.</dd>
 </dl>
 </div></blockquote>
 <p><strong>Preexisting selections</strong></p>
 <blockquote>
 <div><dl class="docutils">
 <dt>group <em>group-name</em></dt>
-<dd>selects the atoms in the <a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a> passed to the function as an
-argument named <em>group-name</em>. Only the atoms common to <em>group-name</em> and the
-instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a> was called from will be considered.
-<em>group-name</em> will be included in the parsing just by comparison of atom indices.
-This means that it is up to the user to make sure they were defined in an
-appropriate <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe" title="MDAnalysis.core.AtomGroup.Universe"><code class="xref py py-class docutils literal"><span class="pre">Universe</span></code></a>.</dd>
+<dd><p class="first">selects the atoms in the <a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a> passed to the
+function as an argument named <em>group-name</em>. Only the atoms
+common to <em>group-name</em> and the instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a>
+was called from will be considered. <em>group-name</em> will be</p>
+<blockquote>
+<div>included in the parsing just by comparison of atom indices.</div></blockquote>
+<p class="last">This means that it is up to the user to make sure they were
+defined in an appropriate <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe" title="MDAnalysis.core.AtomGroup.Universe"><code class="xref py py-class docutils literal"><span class="pre">Universe</span></code></a>.</p>
+</dd>
 <dt>fullgroup <em>group-name</em></dt>
-<dd>just like the <code class="docutils literal"><span class="pre">group</span></code> keyword with the difference that all the atoms of
-<em>group-name</em> are included. The resulting selection may therefore have atoms
-that were initially absent from the instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a> was
-called from.</dd>
+<dd>just like the <code class="docutils literal"><span class="pre">group</span></code> keyword with the difference that all the
+atoms of <em>group-name</em> are included. The resulting selection may
+therefore have atoms that were initially absent from the
+instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a> was called from.</dd>
 </dl>
 </div></blockquote>
 <div class="versionchanged">
@@ -806,6 +824,9 @@ called from.</dd>
 </div>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version 0.8.1: </span>Added <em>group</em> and <em>fullgroup</em> selections.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.13.0: </span>Added <em>bonded</em> selection</p>
 </div>
 </div></blockquote>
 </dd></dl>
@@ -848,38 +869,40 @@ instances is preserved and duplicates are not removed.</p>
 <blockquote>
 <div><dl class="docutils">
 <dt>protein, backbone, nucleic, nucleicbackbone</dt>
-<dd>selects all atoms that belong to a standard set of residues; a protein
-is identfied by a hard-coded set of residue names so it  may not
-work for esoteric residues.</dd>
+<dd>selects all atoms that belong to a standard set of residues;
+a protein is identfied by a hard-coded set of residue names so
+it  may not work for esoteric residues.</dd>
 <dt>segid <em>seg-name</em></dt>
-<dd>select by segid (as given in the topology), e.g. <code class="docutils literal"><span class="pre">segid</span> <span class="pre">4AKE</span></code> or <code class="docutils literal"><span class="pre">segid</span> <span class="pre">DMPC</span></code></dd>
+<dd>select by segid (as given in the topology), e.g. <code class="docutils literal"><span class="pre">segid</span> <span class="pre">4AKE</span></code>
+or <code class="docutils literal"><span class="pre">segid</span> <span class="pre">DMPC</span></code></dd>
 <dt>resid <em>residue-number-range</em></dt>
-<dd>resid can take a single residue number or a range of numbers. A range
-consists of two numbers separated by a colon (inclusive) such
-as <code class="docutils literal"><span class="pre">resid</span> <span class="pre">1:5</span></code>. A residue number (&#8220;resid&#8221;) is taken directly from the
-topology.</dd>
+<dd>resid can take a single residue number or a range of numbers. A
+range consists of two numbers separated by a colon (inclusive)
+such as <code class="docutils literal"><span class="pre">resid</span> <span class="pre">1:5</span></code>. A residue number (&#8220;resid&#8221;) is taken
+directly from the topology.</dd>
 <dt>resnum <em>resnum-number-range</em></dt>
-<dd>resnum is the canonical residue number; typically it is set to the residue id
-in the original PDB structure.</dd>
+<dd>resnum is the canonical residue number; typically it is set to
+the residue id in the original PDB structure.</dd>
 <dt>resname <em>residue-name</em></dt>
 <dd>select by residue name, e.g. <code class="docutils literal"><span class="pre">resname</span> <span class="pre">LYS</span></code></dd>
 <dt>name <em>atom-name</em></dt>
-<dd>select by atom name (as given in the topology). Often, this is force
-field dependent. Example: <code class="docutils literal"><span class="pre">name</span> <span class="pre">CA</span></code> (for C&amp;alpha; atoms) or <code class="docutils literal"><span class="pre">name</span> <span class="pre">OW</span></code> (for SPC water oxygen)</dd>
+<dd>select by atom name (as given in the topology). Often, this is
+force field dependent. Example: <code class="docutils literal"><span class="pre">name</span> <span class="pre">CA</span></code> (for C&amp;alpha; atoms)
+or <code class="docutils literal"><span class="pre">name</span> <span class="pre">OW</span></code> (for SPC water oxygen)</dd>
 <dt>type <em>atom-type</em></dt>
-<dd>select by atom type; this is either a string or a number and depends on
-the force field; it is read from the topology file (e.g. the CHARMM PSF
-file contains numeric atom types). It has non-sensical values when a
-PDB or GRO file is used as a topology.</dd>
+<dd>select by atom type; this is either a string or a number and
+depends on the force field; it is read from the topology file
+(e.g. the CHARMM PSF file contains numeric atom types). It has
+non-sensical values when a PDB or GRO file is used as a topology</dd>
 <dt>atom <em>seg-name</em>  <em>residue-number</em>  <em>atom-name</em></dt>
 <dd>a selector for a single atom consisting of segid resid atomname,
-e.g. <code class="docutils literal"><span class="pre">DMPC</span> <span class="pre">1</span> <span class="pre">C2</span></code> selects the C2 carbon of the first residue of the DMPC
-segment</dd>
+e.g. <code class="docutils literal"><span class="pre">DMPC</span> <span class="pre">1</span> <span class="pre">C2</span></code> selects the C2 carbon of the first residue of
+the DMPC segment</dd>
 <dt>altloc <em>alternative-location</em></dt>
 <dd>a selection for atoms where alternative locations are available,
 which is often the case with high-resolution crystal structures
-e.g. <cite>resid 4 and resname ALA and altloc B</cite> selects only the atoms
-of ALA-4 that have an altloc B record.</dd>
+e.g. <cite>resid 4 and resname ALA and altloc B</cite> selects only the
+atoms of ALA-4 that have an altloc B record.</dd>
 </dl>
 </div></blockquote>
 <p><strong>Boolean</strong></p>
@@ -889,9 +912,10 @@ of ALA-4 that have an altloc B record.</dd>
 <dd>all atoms not in the selection, e.g. <code class="docutils literal"><span class="pre">not</span> <span class="pre">protein</span></code> selects
 all atoms that aren&#8217;t part of a protein</dd>
 <dt>and, or</dt>
-<dd>combine two selections according to the rules of boolean algebra,
-e.g. <code class="docutils literal"><span class="pre">protein</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">(resname</span> <span class="pre">ALA</span> <span class="pre">or</span> <span class="pre">resname</span> <span class="pre">LYS)</span></code> selects all atoms
-that belong to a protein, but are not in a lysine or alanine residue</dd>
+<dd>combine two selections according to the rules of boolean
+algebra, e.g. <code class="docutils literal"><span class="pre">protein</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">(resname</span> <span class="pre">ALA</span> <span class="pre">or</span> <span class="pre">resname</span> <span class="pre">LYS)</span></code>
+selects all atoms that belong to a protein, but are not in a
+lysine or alanine residue</dd>
 </dl>
 </div></blockquote>
 <p><strong>Geometric</strong></p>
@@ -899,18 +923,26 @@ that belong to a protein, but are not in a lysine or alanine residue</dd>
 <div><dl class="docutils">
 <dt>around <em>distance</em>  <em>selection</em></dt>
 <dd>selects all atoms a certain cutoff away from another selection,
-e.g. <code class="docutils literal"><span class="pre">around</span> <span class="pre">3.5</span> <span class="pre">protein</span></code> selects all atoms not belonging to protein
-that are within 3.5 Angstroms from the protein</dd>
+e.g. <code class="docutils literal"><span class="pre">around</span> <span class="pre">3.5</span> <span class="pre">protein</span></code> selects all atoms not belonging to
+protein that are within 3.5 Angstroms from the protein</dd>
 <dt>point <em>x</em> <em>y</em> <em>z</em>  <em>distance</em></dt>
 <dd>selects all atoms within a cutoff of a point in space, make sure
-coordinate is separated by spaces, e.g. <code class="docutils literal"><span class="pre">point</span> <span class="pre">5.0</span> <span class="pre">5.0</span> <span class="pre">5.0</span>&nbsp; <span class="pre">3.5</span></code> selects
-all atoms within 3.5 Angstroms of the coordinate (5.0, 5.0, 5.0)</dd>
+coordinate is separated by spaces,
+e.g. <code class="docutils literal"><span class="pre">point</span> <span class="pre">5.0</span> <span class="pre">5.0</span> <span class="pre">5.0</span>&nbsp; <span class="pre">3.5</span></code> selects all atoms within 3.5
+Angstroms of the coordinate (5.0, 5.0, 5.0)</dd>
 <dt>prop [abs] <em>property</em>  <em>operator</em>  <em>value</em></dt>
-<dd>selects atoms based on position, using <em>property</em>  <strong>x</strong>, <strong>y</strong>, or
-<strong>z</strong> coordinate. Supports the <strong>abs</strong> keyword (for absolute value) and
-the following <em>operators</em>: <strong>&lt;, &gt;, &lt;=, &gt;=, ==, !=</strong>. For example, <code class="docutils literal"><span class="pre">prop</span> <span class="pre">z</span> <span class="pre">&gt;=</span> <span class="pre">5.0</span></code>
-selects all atoms with z coordinate greater than 5.0; <code class="docutils literal"><span class="pre">prop</span> <span class="pre">abs</span> <span class="pre">z</span> <span class="pre">&lt;=</span> <span class="pre">5.0</span></code>
-selects all atoms within -5.0 &lt;= z &lt;= 5.0.</dd>
+<dd>selects atoms based on position, using <em>property</em>  <strong>x</strong>, <strong>y</strong>,
+or <strong>z</strong> coordinate. Supports the <strong>abs</strong> keyword (for absolute
+value) and the following <em>operators</em>: <strong>&lt;, &gt;, &lt;=, &gt;=, ==, !=</strong>.
+For example, <code class="docutils literal"><span class="pre">prop</span> <span class="pre">z</span> <span class="pre">&gt;=</span> <span class="pre">5.0</span></code> selects all atoms with z
+coordinate greater than 5.0; <code class="docutils literal"><span class="pre">prop</span> <span class="pre">abs</span> <span class="pre">z</span> <span class="pre">&lt;=</span> <span class="pre">5.0</span></code> selects all
+atoms within -5.0 &lt;= z &lt;= 5.0.</dd>
+<dt>sphzone <em>radius</em> <em>selection</em></dt>
+<dd>Selects all atoms that are within <em>radius</em> of the center of
+geometry of <em>selection</em></dd>
+<dt>sphlayer <em>inner radius</em> <em>outer radius</em> <em>selection</em></dt>
+<dd>Similar to sphzone, but also excludes atoms that are within
+<em>inner radius</em> of the selection COG</dd>
 </dl>
 </div></blockquote>
 <p><strong>Connectivity</strong></p>
@@ -919,6 +951,10 @@ selects all atoms within -5.0 &lt;= z &lt;= 5.0.</dd>
 <dt>byres <em>selection</em></dt>
 <dd>selects all atoms that are in the same segment and residue as
 selection, e.g. specify the subselection after the byres keyword</dd>
+<dt>bonded <em>selection</em></dt>
+<dd>selects all atoms that are bonded to selection
+eg: <code class="docutils literal"><span class="pre">select</span> <span class="pre">name</span> <span class="pre">H</span> <span class="pre">bonded</span> <span class="pre">name</span> <span class="pre">O</span></code> selects only hydrogens
+bonded to oxygens</dd>
 </dl>
 </div></blockquote>
 <p><strong>Index</strong></p>
@@ -926,27 +962,30 @@ selection, e.g. specify the subselection after the byres keyword</dd>
 <div><dl class="docutils">
 <dt>bynum <em>index-range</em></dt>
 <dd>selects all atoms within a range of (1-based) inclusive indices,
-e.g. <code class="docutils literal"><span class="pre">bynum</span> <span class="pre">1</span></code> selects the first atom in the universe; <code class="docutils literal"><span class="pre">bynum</span> <span class="pre">5:10</span></code>
-selects atoms 5 through 10 inclusive. All atoms in the
-<code class="xref py py-class docutils literal"><span class="pre">MDAnalysis.Universe</span></code> are consecutively numbered, and the index
-runs from 1 up to the total number of atoms.</dd>
+e.g. <code class="docutils literal"><span class="pre">bynum</span> <span class="pre">1</span></code> selects the first atom in the universe;
+<code class="docutils literal"><span class="pre">bynum</span> <span class="pre">5:10</span></code> selects atoms 5 through 10 inclusive. All atoms
+in the <code class="xref py py-class docutils literal"><span class="pre">MDAnalysis.Universe</span></code> are consecutively numbered,
+and the index runs from 1 up to the total number of atoms.</dd>
 </dl>
 </div></blockquote>
 <p><strong>Preexisting selections</strong></p>
 <blockquote>
 <div><dl class="docutils">
 <dt>group <em>group-name</em></dt>
-<dd>selects the atoms in the <a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a> passed to the function as an
-argument named <em>group-name</em>. Only the atoms common to <em>group-name</em> and the
-instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a> was called from will be considered.
-<em>group-name</em> will be included in the parsing just by comparison of atom indices.
-This means that it is up to the user to make sure they were defined in an
-appropriate <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe" title="MDAnalysis.core.AtomGroup.Universe"><code class="xref py py-class docutils literal"><span class="pre">Universe</span></code></a>.</dd>
+<dd><p class="first">selects the atoms in the <a class="reference internal" href="#MDAnalysis.core.AtomGroup.AtomGroup" title="MDAnalysis.core.AtomGroup.AtomGroup"><code class="xref py py-class docutils literal"><span class="pre">AtomGroup</span></code></a> passed to the
+function as an argument named <em>group-name</em>. Only the atoms
+common to <em>group-name</em> and the instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a>
+was called from will be considered. <em>group-name</em> will be</p>
+<blockquote>
+<div>included in the parsing just by comparison of atom indices.</div></blockquote>
+<p class="last">This means that it is up to the user to make sure they were
+defined in an appropriate <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe" title="MDAnalysis.core.AtomGroup.Universe"><code class="xref py py-class docutils literal"><span class="pre">Universe</span></code></a>.</p>
+</dd>
 <dt>fullgroup <em>group-name</em></dt>
-<dd>just like the <code class="docutils literal"><span class="pre">group</span></code> keyword with the difference that all the atoms of
-<em>group-name</em> are included. The resulting selection may therefore have atoms
-that were initially absent from the instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a> was
-called from.</dd>
+<dd>just like the <code class="docutils literal"><span class="pre">group</span></code> keyword with the difference that all the
+atoms of <em>group-name</em> are included. The resulting selection may
+therefore have atoms that were initially absent from the
+instance <a class="reference internal" href="#MDAnalysis.core.AtomGroup.Universe.select_atoms" title="MDAnalysis.core.AtomGroup.Universe.select_atoms"><code class="xref py py-meth docutils literal"><span class="pre">select_atoms()</span></code></a> was called from.</dd>
 </dl>
 </div></blockquote>
 <div class="versionchanged">
@@ -954,6 +993,9 @@ called from.</dd>
 </div>
 <div class="versionchanged">
 <p><span class="versionmodified">Changed in version 0.8.1: </span>Added <em>group</em> and <em>fullgroup</em> selections.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 0.13.0: </span>Added <em>bonded</em> selection</p>
 </div>
 </dd></dl>
 

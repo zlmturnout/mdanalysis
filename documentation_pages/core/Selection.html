@@ -100,7 +100,8 @@
 <dt id="MDAnalysis.core.Selection.BackboneSelection">
 <em class="property">class </em><code class="descclassname">MDAnalysis.core.Selection.</code><code class="descname">BackboneSelection</code><a class="reference internal" href="../../_modules/MDAnalysis/core/Selection.html#BackboneSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.core.Selection.BackboneSelection" title="Permalink to this definition">¶</a></dt>
 <dd><p>A BackboneSelection contains all atoms with name &#8216;N&#8217;, &#8216;CA&#8217;, &#8216;C&#8217;, &#8216;O&#8217;.</p>
-<p>This excludes OT* on C-termini (which are included by, eg VMD&#8217;s backbone selection).</p>
+<p>This excludes OT* on C-termini
+(which are included by, eg VMD&#8217;s backbone selection).</p>
 </dd></dl>
 
 <dl class="class">
@@ -114,15 +115,29 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="MDAnalysis.core.Selection.CASelection">
-<em class="property">class </em><code class="descclassname">MDAnalysis.core.Selection.</code><code class="descname">CASelection</code><a class="reference internal" href="../../_modules/MDAnalysis/core/Selection.html#CASelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.core.Selection.CASelection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select atoms named CA in protein residues (supposed to be the C-alphas)</p>
+<dt id="MDAnalysis.core.Selection.DistanceSelection">
+<em class="property">class </em><code class="descclassname">MDAnalysis.core.Selection.</code><code class="descname">DistanceSelection</code><a class="reference internal" href="../../_modules/MDAnalysis/core/Selection.html#DistanceSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.core.Selection.DistanceSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for distance search based selections</p>
+<dl class="docutils">
+<dt>Grabs the flags for this selection</dt>
+<dd><ul class="first last simple">
+<li>&#8216;use_KDTree_routines&#8217;</li>
+<li>&#8216;use_periodic_selections&#8217;</li>
+</ul>
+</dd>
+<dt>Populates the <cite>_apply</cite> method with either</dt>
+<dd><ul class="first last simple">
+<li>_apply_KDTree</li>
+<li>_apply_distmat</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="MDAnalysis.core.Selection.NucleicBackboneSelection">
 <em class="property">class </em><code class="descclassname">MDAnalysis.core.Selection.</code><code class="descname">NucleicBackboneSelection</code><a class="reference internal" href="../../_modules/MDAnalysis/core/Selection.html#NucleicBackboneSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.core.Selection.NucleicBackboneSelection" title="Permalink to this definition">¶</a></dt>
-<dd><p>A NucleicBackboneSelection contains all atoms with name &#8220;P&#8221;, &#8220;C5&#8217;&#8221;, C3&#8217;&#8221;, &#8220;O3&#8217;&#8221;, &#8220;O5&#8217;&#8221;.</p>
+<dd><p>Contains all atoms with name &#8220;P&#8221;, &#8220;C5&#8217;&#8221;, C3&#8217;&#8221;, &#8220;O3&#8217;&#8221;, &#8220;O5&#8217;&#8221;.</p>
 <p>These atoms are only recognized if they are in a residue matched
 by the <a class="reference internal" href="#MDAnalysis.core.Selection.NucleicSelection" title="MDAnalysis.core.Selection.NucleicSelection"><code class="xref py py-class docutils literal"><span class="pre">NucleicSelection</span></code></a>.</p>
 </dd></dl>
@@ -145,14 +160,14 @@ by the <a class="reference internal" href="#MDAnalysis.core.Selection.NucleicSel
 </li>
 </ul>
 <div class="versionchanged">
-<p><span class="versionmodified">Changed in version 0.8: </span>additional Gromacs selections (see also <code class="xref py py-class docutils literal"><span class="pre">NucleicXstalSelection</span></code>)</p>
+<p><span class="versionmodified">Changed in version 0.8: </span>additional Gromacs selections</p>
 </div>
 </dd></dl>
 
 <dl class="class">
 <dt id="MDAnalysis.core.Selection.NucleicSugarSelection">
 <em class="property">class </em><code class="descclassname">MDAnalysis.core.Selection.</code><code class="descname">NucleicSugarSelection</code><a class="reference internal" href="../../_modules/MDAnalysis/core/Selection.html#NucleicSugarSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#MDAnalysis.core.Selection.NucleicSugarSelection" title="Permalink to this definition">¶</a></dt>
-<dd><p>A NucleicSugarSelection contains all atoms with name C1&#8217;, C2&#8217;, C3&#8217;, C4&#8217;, O2&#8217;, O4&#8217;, O3&#8217;.</p>
+<dd><p>Contains all atoms with name C1&#8217;, C2&#8217;, C3&#8217;, C4&#8217;, O2&#8217;, O4&#8217;, O3&#8217;.</p>
 </dd></dl>
 
 <dl class="class">
